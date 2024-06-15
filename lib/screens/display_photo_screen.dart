@@ -7,14 +7,13 @@ class DisplayPhotoScreen extends StatelessWidget {
   const DisplayPhotoScreen({Key? key, required this.imagePath})
       : super(key: key);
 
-  final String imagePath;
+  final List<String> imagePath;
 
   Future<void> upload(imagePath) async {
-    // 画像をスマホのギャラリーから取得
-    // 画像を取得できた場合はFirebaseStorageにアップロードする
+    // 画像を取得できた場合一枚目をFirebaseStorageにアップロードする
     FirebaseStorage storage = FirebaseStorage.instance;
     if (imagePath != null) {
-      final imageFile = File(imagePath);
+      final imageFile = File(imagePath[0]);
       try {
         await storage.ref('UL/upload-pic.jpeg').putFile(imageFile);
       } catch (e) {
@@ -38,23 +37,37 @@ class DisplayPhotoScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: const Text('撮れた写真')),
       body: Column(
-        children: [
-          Center(child: Image.file(File(imagePath))),
-          Container(
-            child: FloatingActionButton(
-              onPressed: () async {
-                await upload(imagePath);
-              },
-              child: const Icon(Icons.upload),
+        children: [Expanded(
+          child: GridView.builder(
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2, // 2列で表示
+              crossAxisSpacing: 10.0, // グリッド間の横スペース
+              mainAxisSpacing: 10.0, // グリッド間の縦スペース
             ),
+            itemCount: imagePath.length,
+            itemBuilder: (context, index) {
+              String path = imagePath[index];
+              return GridTile(
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: Center(child: Image.file(File(path))),
+                    ),
+                  ],
+                ),
+              );
+            },
           ),
-          // FutureBuilder(
-          //   future: download(),
-          //   builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-          //     return snapshot.data ?? Container();
-          //   },
-          // )
-        ],
+        ),
+        Container(
+                  child: FloatingActionButton(
+                    onPressed: () async {
+                      await upload(imagePath); // ここで画像のアップロード処理を行う関数を呼び出す
+                    },
+                    child: const Icon(Icons.upload),
+                  ),
+                ),
+        ]
       ),
     );
   }

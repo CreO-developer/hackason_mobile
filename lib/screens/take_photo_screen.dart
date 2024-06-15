@@ -1,6 +1,11 @@
+import 'dart:async';
+
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/screens/display_photo_screen.dart';
+
+const PHOTO_NUM = 3;
+const DELAY_TIME = 5;
 
 class TakePhotoScreen extends StatefulWidget {
   const TakePhotoScreen({
@@ -17,6 +22,10 @@ class TakePhotoScreen extends StatefulWidget {
 class TakePhotoScreenState extends State<TakePhotoScreen> {
   late CameraController _controller;
   late Future<void> _initializeControllerFuture;
+  List<String> _imagePaths = [];
+  int _photoCount = 0;
+  Timer? _timer;
+  bool _isTakingPhoto = false;
 
   @override
   void initState() {
@@ -36,8 +45,61 @@ class TakePhotoScreenState extends State<TakePhotoScreen> {
   @override
   void dispose() {
     // ウィジェットが破棄されたら、コントローラーを破棄
+    _timer?.cancel();
     _controller.dispose();
     super.dispose();
+  }
+
+  Future<void> _takePicture() async {
+    if (!_controller.value.isInitialized) {
+      return;
+    }
+
+    try {
+      setState(() {
+        _isTakingPhoto = true;
+      });
+
+      final image = await _controller.takePicture();
+
+      setState(() {
+        _imagePaths.add(image.path); // 撮影した画像のパスをリストに追加
+      });
+
+      setState(() {
+        _photoCount++;
+      });
+
+      if (_photoCount < PHOTO_NUM) {
+        // 次のDELAY_TIME秒後に再度撮影を開始する
+        _timer = Timer(Duration(seconds: DELAY_TIME), () {
+          _takePicture();
+        });
+      } else {
+        await Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => DisplayPhotoScreen(imagePath: _imagePaths),
+            fullscreenDialog: true,
+          ),
+        );
+      }
+    } catch (e) {
+      print('Error taking picture: $e');
+    } finally {
+      setState(() {
+        _isTakingPhoto = false;
+      });
+    }
+  }
+
+  Future<void> _startTakingPhotos() async {
+    setState(() {
+      _isTakingPhoto = true;
+    });
+
+    await Future.delayed(Duration(seconds: DELAY_TIME));
+
+    _takePicture();
   }
 
   @override
@@ -56,17 +118,7 @@ class TakePhotoScreenState extends State<TakePhotoScreen> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          // 写真を撮る
-          final image = await _controller.takePicture();
-          // 表示用の画面に遷移
-          await Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) => DisplayPhotoScreen(imagePath: image.path),
-              fullscreenDialog: true,
-            ),
-          );
-        },
+        onPressed: _isTakingPhoto || _photoCount >= PHOTO_NUM ? null : _startTakingPhotos,
         child: const Icon(Icons.camera_alt),
       ),
     );
