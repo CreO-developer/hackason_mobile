@@ -37,3 +37,33 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+// import 'package:flutter/material.dart';
+// import 'package:firebase_core/firebase_core.dart';
+// import 'firebase_options.dart';
+
+// Future<void> main() async {
+//   WidgetsFlutterBinding.ensureInitialized();
+//   await Firebase.initializeApp(
+//     options: DefaultFirebaseOptions.currentPlatform,
+//   );
+
+//   runApp(MyApp());
+// }
+
+// class MyApp extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       title: 'Flutter サンプルアプリ',
+//       theme: ThemeData(),
+//       home: Scaffold(
+//         appBar: AppBar(
+//           title: Text('ホームページ'),
+//         ),
+//         body: Center(
+//           child: Text('ここで何か新しいことを試してみましょう！'),
+//         ),
+//       ),
+//     );
+//   }
+// }
