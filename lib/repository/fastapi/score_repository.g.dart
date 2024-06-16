@@ -13,7 +13,7 @@ class _ApiClient implements ApiClient {
     this._dio, {
     this.baseUrl,
   }) {
-    baseUrl ??= 'https://api.example.com/';
+    baseUrl ??= 'http://localhost:8000';
   }
 
   final Dio _dio;
@@ -21,11 +21,12 @@ class _ApiClient implements ApiClient {
   String? baseUrl;
 
   @override
-  Future<Scores> submitString(inputString) async {
+  Future<Scores> submitString(data) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = inputString;
+    final _data = <String, dynamic>{};
+    _data.addAll(data);
     final _result =
         await _dio.fetch<Map<String, dynamic>>(_setStreamType<Scores>(Options(
       method: 'POST',
@@ -34,7 +35,7 @@ class _ApiClient implements ApiClient {
     )
             .compose(
               _dio.options,
-              '/data/submit',
+              '/mock/question1',
               queryParameters: queryParameters,
               data: _data,
             )

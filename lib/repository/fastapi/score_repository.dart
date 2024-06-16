@@ -1,13 +1,13 @@
-import 'package:dio/dio.dart';
 import 'package:mobile/model/scores/scores.dart';
+import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 
 part 'score_repository.g.dart';
 
-@RestApi(baseUrl: "https://api.example.com/")
+@RestApi(baseUrl: "http://localhost:8000")
 abstract class ApiClient {
   factory ApiClient(Dio dio, {String? baseUrl}) = _ApiClient;
 
-  @POST("/data/submit")
-  Future<Scores> submitString(@Body() String inputString);
+  @POST("/mock/question1")
+  Future<Scores> submitString(@Body() Map<String, dynamic> data); // Mapに変更
 }

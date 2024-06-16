@@ -20,9 +20,11 @@ Scores _$ScoresFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Scores {
-  int get score1 => throw _privateConstructorUsedError;
-  int get score2 => throw _privateConstructorUsedError;
-  int get score3 => throw _privateConstructorUsedError;
+  int get includeScore => throw _privateConstructorUsedError;
+  int get excludeScore => throw _privateConstructorUsedError;
+  int get peopleScore => throw _privateConstructorUsedError;
+  int get originalScore => throw _privateConstructorUsedError;
+  int? get faceScore => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -34,7 +36,12 @@ abstract class $ScoresCopyWith<$Res> {
   factory $ScoresCopyWith(Scores value, $Res Function(Scores) then) =
       _$ScoresCopyWithImpl<$Res, Scores>;
   @useResult
-  $Res call({int score1, int score2, int score3});
+  $Res call(
+      {int includeScore,
+      int excludeScore,
+      int peopleScore,
+      int originalScore,
+      int? faceScore});
 }
 
 /// @nodoc
@@ -50,23 +57,33 @@ class _$ScoresCopyWithImpl<$Res, $Val extends Scores>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? score1 = null,
-    Object? score2 = null,
-    Object? score3 = null,
+    Object? includeScore = null,
+    Object? excludeScore = null,
+    Object? peopleScore = null,
+    Object? originalScore = null,
+    Object? faceScore = freezed,
   }) {
     return _then(_value.copyWith(
-      score1: null == score1
-          ? _value.score1
-          : score1 // ignore: cast_nullable_to_non_nullable
+      includeScore: null == includeScore
+          ? _value.includeScore
+          : includeScore // ignore: cast_nullable_to_non_nullable
               as int,
-      score2: null == score2
-          ? _value.score2
-          : score2 // ignore: cast_nullable_to_non_nullable
+      excludeScore: null == excludeScore
+          ? _value.excludeScore
+          : excludeScore // ignore: cast_nullable_to_non_nullable
               as int,
-      score3: null == score3
-          ? _value.score3
-          : score3 // ignore: cast_nullable_to_non_nullable
+      peopleScore: null == peopleScore
+          ? _value.peopleScore
+          : peopleScore // ignore: cast_nullable_to_non_nullable
               as int,
+      originalScore: null == originalScore
+          ? _value.originalScore
+          : originalScore // ignore: cast_nullable_to_non_nullable
+              as int,
+      faceScore: freezed == faceScore
+          ? _value.faceScore
+          : faceScore // ignore: cast_nullable_to_non_nullable
+              as int?,
     ) as $Val);
   }
 }
@@ -78,7 +95,12 @@ abstract class _$$ScoresImplCopyWith<$Res> implements $ScoresCopyWith<$Res> {
       __$$ScoresImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int score1, int score2, int score3});
+  $Res call(
+      {int includeScore,
+      int excludeScore,
+      int peopleScore,
+      int originalScore,
+      int? faceScore});
 }
 
 /// @nodoc
@@ -92,23 +114,33 @@ class __$$ScoresImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? score1 = null,
-    Object? score2 = null,
-    Object? score3 = null,
+    Object? includeScore = null,
+    Object? excludeScore = null,
+    Object? peopleScore = null,
+    Object? originalScore = null,
+    Object? faceScore = freezed,
   }) {
     return _then(_$ScoresImpl(
-      score1: null == score1
-          ? _value.score1
-          : score1 // ignore: cast_nullable_to_non_nullable
+      includeScore: null == includeScore
+          ? _value.includeScore
+          : includeScore // ignore: cast_nullable_to_non_nullable
               as int,
-      score2: null == score2
-          ? _value.score2
-          : score2 // ignore: cast_nullable_to_non_nullable
+      excludeScore: null == excludeScore
+          ? _value.excludeScore
+          : excludeScore // ignore: cast_nullable_to_non_nullable
               as int,
-      score3: null == score3
-          ? _value.score3
-          : score3 // ignore: cast_nullable_to_non_nullable
+      peopleScore: null == peopleScore
+          ? _value.peopleScore
+          : peopleScore // ignore: cast_nullable_to_non_nullable
               as int,
+      originalScore: null == originalScore
+          ? _value.originalScore
+          : originalScore // ignore: cast_nullable_to_non_nullable
+              as int,
+      faceScore: freezed == faceScore
+          ? _value.faceScore
+          : faceScore // ignore: cast_nullable_to_non_nullable
+              as int?,
     ));
   }
 }
@@ -117,21 +149,29 @@ class __$$ScoresImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$ScoresImpl implements _Scores {
   const _$ScoresImpl(
-      {required this.score1, required this.score2, required this.score3});
+      {required this.includeScore,
+      required this.excludeScore,
+      required this.peopleScore,
+      required this.originalScore,
+      this.faceScore});
 
   factory _$ScoresImpl.fromJson(Map<String, dynamic> json) =>
       _$$ScoresImplFromJson(json);
 
   @override
-  final int score1;
+  final int includeScore;
   @override
-  final int score2;
+  final int excludeScore;
   @override
-  final int score3;
+  final int peopleScore;
+  @override
+  final int originalScore;
+  @override
+  final int? faceScore;
 
   @override
   String toString() {
-    return 'Scores(score1: $score1, score2: $score2, score3: $score3)';
+    return 'Scores(includeScore: $includeScore, excludeScore: $excludeScore, peopleScore: $peopleScore, originalScore: $originalScore, faceScore: $faceScore)';
   }
 
   @override
@@ -139,14 +179,22 @@ class _$ScoresImpl implements _Scores {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$ScoresImpl &&
-            (identical(other.score1, score1) || other.score1 == score1) &&
-            (identical(other.score2, score2) || other.score2 == score2) &&
-            (identical(other.score3, score3) || other.score3 == score3));
+            (identical(other.includeScore, includeScore) ||
+                other.includeScore == includeScore) &&
+            (identical(other.excludeScore, excludeScore) ||
+                other.excludeScore == excludeScore) &&
+            (identical(other.peopleScore, peopleScore) ||
+                other.peopleScore == peopleScore) &&
+            (identical(other.originalScore, originalScore) ||
+                other.originalScore == originalScore) &&
+            (identical(other.faceScore, faceScore) ||
+                other.faceScore == faceScore));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, score1, score2, score3);
+  int get hashCode => Object.hash(runtimeType, includeScore, excludeScore,
+      peopleScore, originalScore, faceScore);
 
   @JsonKey(ignore: true)
   @override
@@ -164,18 +212,24 @@ class _$ScoresImpl implements _Scores {
 
 abstract class _Scores implements Scores {
   const factory _Scores(
-      {required final int score1,
-      required final int score2,
-      required final int score3}) = _$ScoresImpl;
+      {required final int includeScore,
+      required final int excludeScore,
+      required final int peopleScore,
+      required final int originalScore,
+      final int? faceScore}) = _$ScoresImpl;
 
   factory _Scores.fromJson(Map<String, dynamic> json) = _$ScoresImpl.fromJson;
 
   @override
-  int get score1;
+  int get includeScore;
   @override
-  int get score2;
+  int get excludeScore;
   @override
-  int get score3;
+  int get peopleScore;
+  @override
+  int get originalScore;
+  @override
+  int? get faceScore;
   @override
   @JsonKey(ignore: true)
   _$$ScoresImplCopyWith<_$ScoresImpl> get copyWith =>

@@ -7,9 +7,11 @@ part 'scores.g.dart';
 @freezed
 class Scores with _$Scores {
   const factory Scores({
-    required int score1,
-    required int score2,
-    required int score3,
+    required int includeScore,
+    required int excludeScore,
+    required int peopleScore,
+    required int originalScore,
+    int? faceScore,
   }) = _Scores;
 
   factory Scores.fromJson(Map<String, dynamic> json) => _$ScoresFromJson(json);

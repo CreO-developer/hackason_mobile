@@ -7,14 +7,18 @@ part of 'scores.dart';
 // **************************************************************************
 
 _$ScoresImpl _$$ScoresImplFromJson(Map<String, dynamic> json) => _$ScoresImpl(
-      score1: (json['score1'] as num).toInt(),
-      score2: (json['score2'] as num).toInt(),
-      score3: (json['score3'] as num).toInt(),
+      includeScore: (json['includeScore'] as num).toInt(),
+      excludeScore: (json['excludeScore'] as num).toInt(),
+      peopleScore: (json['peopleScore'] as num).toInt(),
+      originalScore: (json['originalScore'] as num).toInt(),
+      faceScore: (json['faceScore'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$$ScoresImplToJson(_$ScoresImpl instance) =>
     <String, dynamic>{
-      'score1': instance.score1,
-      'score2': instance.score2,
-      'score3': instance.score3,
+      'includeScore': instance.includeScore,
+      'excludeScore': instance.excludeScore,
+      'peopleScore': instance.peopleScore,
+      'originalScore': instance.originalScore,
+      'faceScore': instance.faceScore,
     };
