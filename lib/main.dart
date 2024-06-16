@@ -37,46 +37,78 @@
 //     );
 //   }
 // }
+import 'package:camera/camera.dart';
 import 'package:mobile/provider/score_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'firebase_options.dart';
+import 'package:mobile/router/router.dart';
+
+final cameraProvider = StateProvider<CameraDescription?>((ref) => null);
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  // 利用可能なカメラのリストを取得
+  final List<CameraDescription> cameras = await availableCameras();
 
-  runApp(ProviderScope(child: MyApp()));
+  runApp(
+    ProviderScope(
+      overrides: [
+        cameraProvider.overrideWithValue(
+            StateController(cameras.isNotEmpty ? cameras.first : null)),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
-// MyAppクラスの定義
-// MyAppクラスの定義
-class MyApp extends ConsumerWidget {
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final scores = ref.watch(scoresStateNotifierProvider);
-    return MaterialApp(
-      title: 'Flutter サンプルアプリ',
-      theme: ThemeData(),
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('api'),
-        ),
-        body: Center(
-          child: scores != null
-              ? Text(
-                  'Scores: ${scores.includeScore}, ${scores.originalScore}, ${scores.includeScore}')
-              : ElevatedButton(
-                  onPressed: () => ref
-                      .read(scoresStateNotifierProvider.notifier)
-                      .submitString("fheihafheihfaiehfaihf.jpeg"),
-                  child: Text('Fetch Scores'),
-                ),
-        ),
+  Widget build(BuildContext context) {
+    return MaterialApp.router(
+      title: 'アプリ',
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        useMaterial3: true,
       ),
+      routerDelegate: router.routerDelegate,
+      routeInformationParser: router.routeInformationParser,
+      routeInformationProvider: router.routeInformationProvider,
     );
   }
 }
+
+
+// // MyAppクラスの定義
+// class MyApp extends ConsumerWidget {
+//   @override
+//   Widget build(BuildContext context, WidgetRef ref) {
+//     final scores = ref.watch(scoresStateNotifierProvider);
+//     return MaterialApp(
+//       title: 'Flutter サンプルアプリ',
+//       theme: ThemeData(),
+//       home: Scaffold(
+//         appBar: AppBar(
+//           title: const Text('api'),
+//         ),
+//         body: Center(
+//           child: scores != null
+//               ? Text(
+//                   'Scores: ${scores.includeScore}, ${scores.originalScore}, ${scores.includeScore}')
+//               : ElevatedButton(
+//                   onPressed: () => ref
+//                       .read(scoresStateNotifierProvider.notifier)
+//                       .submitString("fheihafheihfaiehfaihf.jpeg"),
+//                   child: Text('Fetch Scores'),
+//                 ),
+//         ),
+//       ),
+//     );
+//   }
+// }
