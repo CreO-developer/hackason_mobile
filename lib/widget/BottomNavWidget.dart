@@ -37,9 +37,9 @@ class AppNavigationBar extends StatelessWidget {
             initialLocation: index == navigationShell.currentIndex,
           );
         },
+        backgroundColor: Colors.transparent, // ナビゲーションバーの背景色を透明に設定
+        elevation: 0, // ドロップダウンリストの影を無くす
         type: BottomNavigationBarType.fixed, // この設定でアイテムが均等に分布
-        showSelectedLabels: false, // 選択されたラベルを表示しない
-        showUnselectedLabels: false, // 選択されていないラベルを表示しない
       ),
     );
   }
