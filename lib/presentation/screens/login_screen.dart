@@ -54,11 +54,11 @@ class LoginPage extends ConsumerWidget {
                   onPressed: () async {
                     final result = await loginController.lgoinUser(emailController.text, passwordController.text);
                     if (result != null) {
-                      Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(builder: (context) {
-                          return Container(child: Text('aaa'),);
-                        }),
-                      );
+                      // Navigator.of(context).pushReplacement(
+                      //   MaterialPageRoute(builder: (context) {
+                      //     return Container(child: Text('aaa'),);
+                      //   }),
+                      // );
                     }
                   },
                 ),
