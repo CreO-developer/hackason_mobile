@@ -21,11 +21,11 @@ class AccountScreen extends ConsumerWidget {
           ),
           Center(
             child: ElevatedButton(
-                  child: Text('ログアウト'),
-                  onPressed: () async {
-                    final result = await loginController.logoutUser();
-                  },
-                ),
+              child: Text('ログアウト'),
+              onPressed: () async {
+                final result = await loginController.logoutUser();
+              },
+            ),
           )
         ],
       ),

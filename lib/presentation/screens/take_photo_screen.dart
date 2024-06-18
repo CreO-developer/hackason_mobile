@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:mobile/screens/display_photo_screen.dart';
+import 'package:mobile/presentation/screens/display_photo_screen.dart';
 
 const PHOTO_NUM = 3;
 const DELAY_TIME = 5;
