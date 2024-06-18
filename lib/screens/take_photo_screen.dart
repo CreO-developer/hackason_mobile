@@ -118,7 +118,9 @@ class TakePhotoScreenState extends State<TakePhotoScreen> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _isTakingPhoto || _photoCount >= PHOTO_NUM ? null : _startTakingPhotos,
+        onPressed: _isTakingPhoto || _photoCount >= PHOTO_NUM
+            ? null
+            : _startTakingPhotos,
         child: const Icon(Icons.camera_alt),
       ),
     );
