@@ -10,11 +10,11 @@ final authNotifierProvider =
 class AuthStateNotifier extends StateNotifier<User?> {
   AuthStateNotifier({required AuthService authService, User? initialUser})
       : _authService = authService,
-        super(initialUser){
-          _auth.userChanges().listen((user) {
-            state = user;
-          });
-        }
+        super(initialUser) {
+    _auth.userChanges().listen((user) {
+      state = user;
+    });
+  }
 
   final _auth = FirebaseAuth.instance;
   final AuthService _authService;
@@ -22,9 +22,11 @@ class AuthStateNotifier extends StateNotifier<User?> {
   Future<UserCredential?> registerUser(String email, String password) async {
     return await _authService.registerUser(email, password);
   }
+
   Future<UserCredential?> lgoinUser(String email, String password) async {
     return await _authService.loginUser(email, password);
   }
+
   Future<void> logoutUser() async {
     await _authService.logoutUser();
   }

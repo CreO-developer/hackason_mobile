@@ -2,12 +2,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile/presentation/notifier/auth_user_notifier.dart';
+import 'package:mobile/presentation/notifier/user_info_notifier.dart';
 
 class LoginPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final loginController = ref.read(authNotifierProvider.notifier);
-    final userNameController = TextEditingController();
+    final authNotifier = ref.read(authNotifierProvider.notifier);
+    final userInfoNotifier = ref.read(userInfoNotifierProvider.notifier);
     final emailController = TextEditingController();
     final passwordController = TextEditingController();
 
@@ -20,11 +21,16 @@ class LoginPage extends ConsumerWidget {
             children: <Widget>[
               TextFormField(
                 decoration: InputDecoration(labelText: 'ニックネーム'),
-                controller: userNameController,
+                onChanged: (value) {
+                  userInfoNotifier.setName(value);
+                },
               ),
               TextFormField(
                 decoration: InputDecoration(labelText: 'メールアドレス'),
                 controller: emailController,
+                onChanged: (value) {
+                  userInfoNotifier.setEmail(value);
+                },
               ),
               TextFormField(
                 decoration: InputDecoration(labelText: 'パスワード'),
@@ -36,14 +42,9 @@ class LoginPage extends ConsumerWidget {
                 child: ElevatedButton(
                   child: Text('ユーザー登録'),
                   onPressed: () async {
-                    final result = await loginController.registerUser(emailController.text, passwordController.text);
-                    // if (result != null) {
-                    //   Navigator.of(context).pushReplacement(
-                    //     MaterialPageRoute(builder: (context) {
-                    //       return Container(child: Text('aaa'),);
-                    //     }),
-                    //   );
-                    // }
+                    final result = await authNotifier.registerUser(
+                        emailController.text, passwordController.text);
+                    await userInfoNotifier.createUserInfo(result!.user!.uid);
                   },
                 ),
               ),
@@ -52,13 +53,10 @@ class LoginPage extends ConsumerWidget {
                 child: ElevatedButton(
                   child: Text('ログイン'),
                   onPressed: () async {
-                    final result = await loginController.lgoinUser(emailController.text, passwordController.text);
-                    if (result != null) {
-                      // Navigator.of(context).pushReplacement(
-                      //   MaterialPageRoute(builder: (context) {
-                      //     return Container(child: Text('aaa'),);
-                      //   }),
-                      // );
+                    final result = await authNotifier.lgoinUser(
+                        emailController.text, passwordController.text);
+                    if (result == null) {
+                      print('ログインに失敗しました');
                     }
                   },
                 ),
