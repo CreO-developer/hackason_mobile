@@ -37,13 +37,13 @@
 //     );
 //   }
 // }
+
 import 'package:camera/camera.dart';
-import 'package:mobile/provider/score_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'firebase_options.dart';
 import 'package:mobile/router/router.dart';
+import 'firebase_options.dart';
 
 final cameraProvider = StateProvider<CameraDescription?>((ref) => null);
 
@@ -66,11 +66,12 @@ Future<void> main() async {
   );
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final router = CustomRouter(ref);
     return MaterialApp.router(
       title: 'アプリ',
       theme: ThemeData(
@@ -83,7 +84,6 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
 
 // // MyAppクラスの定義
 // class MyApp extends ConsumerWidget {
@@ -110,5 +110,54 @@ class MyApp extends StatelessWidget {
 //         ),
 //       ),
 //     );
+//   }
+// }
+
+// import 'package:camera/camera.dart';
+// import 'package:firebase_core/firebase_core.dart';
+// import 'package:flutter/material.dart';
+// import 'package:flutter_riverpod/flutter_riverpod.dart';
+// import 'package:mobile/presentation/notifier/auth_user_notifier.dart';
+// import 'package:mobile/presentation/screens/login_screen.dart';
+// import 'package:mobile/screens/login_screen.dart';
+
+// final cameraProvider = StateProvider<CameraDescription?>((ref) => null);
+// void main() async {
+//   // 初期化処理を追加
+//   WidgetsFlutterBinding.ensureInitialized();
+//   await Firebase.initializeApp();
+
+//   runApp(ProviderScope(child: MyApp()));
+// }
+
+// class MyApp extends ConsumerWidget {
+//   @override
+//   Widget build(BuildContext context, WidgetRef ref) {
+//     final loginState = ref.watch(authNotifierProvider);
+
+//     if (loginState == null) {
+
+//       return MaterialApp(
+//         title: 'Flutter サンプルアプリ',
+//         theme: ThemeData(),
+//         home: Scaffold(
+//           appBar: AppBar(
+//             title: Text('ホームページ'),
+//           ),
+//           body: LoginPage(),
+//         ),
+//       );
+//     } else {
+//       return MaterialApp(
+//         title: 'Flutter サンプルアプリ',
+//         theme: ThemeData(),
+//         home: Scaffold(
+//           appBar: AppBar(
+//             title: Text('aa'),
+//           ),
+//         ),
+//       );
+//     }
+ 
 //   }
 // }
