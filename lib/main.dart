@@ -76,6 +76,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
+        scaffoldBackgroundColor: Color(0xFFFCF1D4), // 背景色を設定
       ),
       routerDelegate: router.routerDelegate,
       routeInformationParser: router.routeInformationParser,
