@@ -4,6 +4,7 @@ import 'package:mobile/presentation/notifier/auth_user_notifier.dart';
 import 'package:mobile/presentation/screens/login_screen.dart';
 import 'package:mobile/presentation/screens/account_screen.dart';
 import 'package:mobile/presentation/screens/home_screen.dart';
+import 'package:mobile/presentation/screens/question_screen.dart';
 import 'package:mobile/presentation/screens/ranking_screen.dart';
 import 'package:mobile/widget/BottomNavWidget.dart';
 import 'package:path/path.dart';
@@ -20,7 +21,15 @@ GoRouter CustomRouter(WidgetRef ref) {
       routes: [
         StatefulShellRoute.indexedStack(
             builder: (context, state, navigationShell) {
-              return AppNavigationBar(navigationShell: navigationShell);
+              // Check if the current route is 'home/question'
+              final location = state.uri.toString();
+              if (location == '/home/question') {
+                // Return only the navigationShell content without the AppNavigationBar
+                return navigationShell;
+              } else {
+                // Return the AppNavigationBar
+                return AppNavigationBar(navigationShell: navigationShell);
+              }
             },
             branches: [
               // ランキングブランチ
@@ -44,6 +53,12 @@ GoRouter CustomRouter(WidgetRef ref) {
                       key: state.pageKey,
                       child: HomeScreen(),
                     ),
+                    routes: [
+                      GoRoute(
+                        path: 'question',
+                        builder: (context, state) => QuestionScreen(),
+                      ),
+                    ],
                   ),
                 ],
               ),
