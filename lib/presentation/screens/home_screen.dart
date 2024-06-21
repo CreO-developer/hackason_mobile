@@ -110,7 +110,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               onPressed: () {
                 setState(() {
                   // showButton = false; // ボタンを非表示にし、選択ボックスを表示
-                  context.go('/home/question');
+                  context.go('/home/question1');
                 });
               },
               style: ElevatedButton.styleFrom(
