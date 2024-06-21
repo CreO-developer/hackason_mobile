@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mobile/application/state/post_state.dart';
+import 'package:mobile/domain/entities/post.dart';
 import 'package:mobile/presentation/screens/post_screen.dart';
 
 class RankingWidget extends ConsumerWidget {
   const RankingWidget({Key? key, required this.posts}) : super(key: key);
 
-  final List<PostState> posts;
+  final List<Post> posts;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

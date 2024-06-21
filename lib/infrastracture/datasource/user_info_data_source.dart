@@ -23,4 +23,16 @@ class UserInfoDataSource implements UserInfoRepository {
       return null;
     }
   }
+
+  @override
+  Future<UserInfo?> getUserInfo(String uid) async {
+    try {
+      final result = await db.collection('users').doc(uid).get();
+      final userInfo = UserInfo.fromMap(result.data());
+      return userInfo;
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
 }

@@ -31,17 +31,4 @@ class RankingDataSource implements RankingRepository {
       return null;
     }
   }
-
-  @override
-  Future<String?> getName(String uid) async {
-    try {
-      final user = await db.collection('users').doc(uid).get();
-      final name = user.data()?['name'];
-
-      return name;
-    } catch (e) {
-      print(e);
-      return null;
-    }
-  }
 }

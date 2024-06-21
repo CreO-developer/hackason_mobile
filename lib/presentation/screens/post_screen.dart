@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:mobile/application/state/post_state.dart';
+import 'package:mobile/domain/entities/post.dart';
 
 class PostScreen extends StatelessWidget {
   const PostScreen({
@@ -8,7 +8,7 @@ class PostScreen extends StatelessWidget {
     this.post,
   });
 
-  final PostState? post;
+  final Post? post;
 
 
   @override

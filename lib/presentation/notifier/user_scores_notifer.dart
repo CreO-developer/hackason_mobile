@@ -35,7 +35,6 @@ class UserScoresStateNotifier extends StateNotifier<List<UserScoresState>> {
       result = await _scoreService.submitString4(
           {"imageUrl": data["imgUrl"], "themeNumber": questionNumber});
     }
-    print(result);
 
     state = [
       ...state,

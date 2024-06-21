@@ -1,13 +1,13 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:mobile/application/state/post_state.dart';
+import 'package:mobile/domain/entities/post.dart';
 
 part 'ranking_state.freezed.dart';
 
 @freezed
 class RankingState with _$RankingState {
   const factory RankingState({
-    required List<PostState> shapes,
-    required List<PostState> comedian,
-    required List<PostState> anime,
+    required List<Post> shapes,
+    required List<Post> comedian,
+    required List<Post> anime,
   }) = _RankingState;
 }

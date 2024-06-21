@@ -18,4 +18,8 @@ class UserInfoService {
     final result = await _userInfoRepository.createUserInfo(userInfo, uid);
     return result;
   }
+  Future<UserInfo?> getUserInfo(String uid) async {
+    final userInfo = await _userInfoRepository.getUserInfo(uid);
+    return userInfo;
+  }
 }
