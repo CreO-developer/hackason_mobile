@@ -23,7 +23,7 @@ class ScoreService {
   }
 
   Future submitString3(Map<String, dynamic> data) async {
-    final result = await _scoreRepository.submitString4(data);
+    final result = await _scoreRepository.submitString3(data);
     return result;
   }
 
