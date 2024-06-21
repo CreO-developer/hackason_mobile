@@ -4,9 +4,9 @@ import 'package:mobile/presentation/notifier/auth_user_notifier.dart';
 import 'package:mobile/presentation/screens/login_screen.dart';
 import 'package:mobile/presentation/screens/account_screen.dart';
 import 'package:mobile/presentation/screens/home_screen.dart';
+import 'package:mobile/presentation/screens/post_screen.dart';
 import 'package:mobile/presentation/screens/ranking_screen.dart';
 import 'package:mobile/widget/BottomNavWidget.dart';
-import 'package:path/path.dart';
 
 GoRouter CustomRouter(WidgetRef ref) {
   final auth = ref.watch(authNotifierProvider);
@@ -56,6 +56,19 @@ GoRouter CustomRouter(WidgetRef ref) {
                     pageBuilder: (context, state) => NoTransitionPage(
                       key: state.pageKey,
                       child: const AccountScreen(),
+                    ),
+                  ),
+                ],
+              ),
+              // profileブランチ
+
+              StatefulShellBranch(
+                routes: [
+                  GoRoute(
+                    path: '/ranking/post',
+                    pageBuilder: (context, state) => NoTransitionPage(
+                      key: state.pageKey,
+                      child: PostScreen(),
                     ),
                   ),
                 ],
