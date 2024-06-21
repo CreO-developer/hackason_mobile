@@ -3,6 +3,7 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile/main.dart';
+import 'package:mobile/widget/ButtonWidget.dart';
 import 'package:mobile/widget/CameraPreviewWidget.dart';
 import 'package:mobile/widget/TitleWidget.dart';
 
@@ -104,7 +105,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   });
                 },
               ),
-            )
+            ),
+
+            Container(height: 100), // 10ピクセルのスペース
+            const ButtonWidget(
+              buttonText: "人数選択完了",
+              buttonColor: Color(0xFF54BD6B),
+            ),
           ]
         ]),
       ),
