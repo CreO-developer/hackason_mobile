@@ -16,9 +16,9 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$RankingState {
-  List<PostState> get shapes => throw _privateConstructorUsedError;
-  List<PostState> get comedian => throw _privateConstructorUsedError;
-  List<PostState> get anime => throw _privateConstructorUsedError;
+  List<Post> get shapes => throw _privateConstructorUsedError;
+  List<Post> get comedian => throw _privateConstructorUsedError;
+  List<Post> get anime => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $RankingStateCopyWith<RankingState> get copyWith =>
@@ -31,10 +31,7 @@ abstract class $RankingStateCopyWith<$Res> {
           RankingState value, $Res Function(RankingState) then) =
       _$RankingStateCopyWithImpl<$Res, RankingState>;
   @useResult
-  $Res call(
-      {List<PostState> shapes,
-      List<PostState> comedian,
-      List<PostState> anime});
+  $Res call({List<Post> shapes, List<Post> comedian, List<Post> anime});
 }
 
 /// @nodoc
@@ -58,15 +55,15 @@ class _$RankingStateCopyWithImpl<$Res, $Val extends RankingState>
       shapes: null == shapes
           ? _value.shapes
           : shapes // ignore: cast_nullable_to_non_nullable
-              as List<PostState>,
+              as List<Post>,
       comedian: null == comedian
           ? _value.comedian
           : comedian // ignore: cast_nullable_to_non_nullable
-              as List<PostState>,
+              as List<Post>,
       anime: null == anime
           ? _value.anime
           : anime // ignore: cast_nullable_to_non_nullable
-              as List<PostState>,
+              as List<Post>,
     ) as $Val);
   }
 }
@@ -79,10 +76,7 @@ abstract class _$$RankingStateImplCopyWith<$Res>
       __$$RankingStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {List<PostState> shapes,
-      List<PostState> comedian,
-      List<PostState> anime});
+  $Res call({List<Post> shapes, List<Post> comedian, List<Post> anime});
 }
 
 /// @nodoc
@@ -104,15 +98,15 @@ class __$$RankingStateImplCopyWithImpl<$Res>
       shapes: null == shapes
           ? _value._shapes
           : shapes // ignore: cast_nullable_to_non_nullable
-              as List<PostState>,
+              as List<Post>,
       comedian: null == comedian
           ? _value._comedian
           : comedian // ignore: cast_nullable_to_non_nullable
-              as List<PostState>,
+              as List<Post>,
       anime: null == anime
           ? _value._anime
           : anime // ignore: cast_nullable_to_non_nullable
-              as List<PostState>,
+              as List<Post>,
     ));
   }
 }
@@ -121,32 +115,32 @@ class __$$RankingStateImplCopyWithImpl<$Res>
 
 class _$RankingStateImpl implements _RankingState {
   const _$RankingStateImpl(
-      {required final List<PostState> shapes,
-      required final List<PostState> comedian,
-      required final List<PostState> anime})
+      {required final List<Post> shapes,
+      required final List<Post> comedian,
+      required final List<Post> anime})
       : _shapes = shapes,
         _comedian = comedian,
         _anime = anime;
 
-  final List<PostState> _shapes;
+  final List<Post> _shapes;
   @override
-  List<PostState> get shapes {
+  List<Post> get shapes {
     if (_shapes is EqualUnmodifiableListView) return _shapes;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_shapes);
   }
 
-  final List<PostState> _comedian;
+  final List<Post> _comedian;
   @override
-  List<PostState> get comedian {
+  List<Post> get comedian {
     if (_comedian is EqualUnmodifiableListView) return _comedian;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_comedian);
   }
 
-  final List<PostState> _anime;
+  final List<Post> _anime;
   @override
-  List<PostState> get anime {
+  List<Post> get anime {
     if (_anime is EqualUnmodifiableListView) return _anime;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_anime);
@@ -183,16 +177,16 @@ class _$RankingStateImpl implements _RankingState {
 
 abstract class _RankingState implements RankingState {
   const factory _RankingState(
-      {required final List<PostState> shapes,
-      required final List<PostState> comedian,
-      required final List<PostState> anime}) = _$RankingStateImpl;
+      {required final List<Post> shapes,
+      required final List<Post> comedian,
+      required final List<Post> anime}) = _$RankingStateImpl;
 
   @override
-  List<PostState> get shapes;
+  List<Post> get shapes;
   @override
-  List<PostState> get comedian;
+  List<Post> get comedian;
   @override
-  List<PostState> get anime;
+  List<Post> get anime;
   @override
   @JsonKey(ignore: true)
   _$$RankingStateImplCopyWith<_$RankingStateImpl> get copyWith =>

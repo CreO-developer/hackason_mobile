@@ -18,9 +18,4 @@ class RankingService {
     final result = await _rankingRepository.getRanking(theme);
     return result;
   }
-
-  Future<String?> getName(String uid) async {
-    final name = await _rankingRepository.getName(uid);
-    return name;
-  }
 }

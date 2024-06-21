@@ -20,6 +20,7 @@ mixin _$Post {
   Scores get scores => throw _privateConstructorUsedError;
   String get filter => throw _privateConstructorUsedError;
   String get uid => throw _privateConstructorUsedError;
+  String get name => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $PostCopyWith<Post> get copyWith => throw _privateConstructorUsedError;
@@ -30,7 +31,8 @@ abstract class $PostCopyWith<$Res> {
   factory $PostCopyWith(Post value, $Res Function(Post) then) =
       _$PostCopyWithImpl<$Res, Post>;
   @useResult
-  $Res call({String imgUrl, Scores scores, String filter, String uid});
+  $Res call(
+      {String imgUrl, Scores scores, String filter, String uid, String name});
 
   $ScoresCopyWith<$Res> get scores;
 }
@@ -52,6 +54,7 @@ class _$PostCopyWithImpl<$Res, $Val extends Post>
     Object? scores = null,
     Object? filter = null,
     Object? uid = null,
+    Object? name = null,
   }) {
     return _then(_value.copyWith(
       imgUrl: null == imgUrl
@@ -69,6 +72,10 @@ class _$PostCopyWithImpl<$Res, $Val extends Post>
       uid: null == uid
           ? _value.uid
           : uid // ignore: cast_nullable_to_non_nullable
+              as String,
+      name: null == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
               as String,
     ) as $Val);
   }
@@ -89,7 +96,8 @@ abstract class _$$PostImplCopyWith<$Res> implements $PostCopyWith<$Res> {
       __$$PostImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String imgUrl, Scores scores, String filter, String uid});
+  $Res call(
+      {String imgUrl, Scores scores, String filter, String uid, String name});
 
   @override
   $ScoresCopyWith<$Res> get scores;
@@ -109,6 +117,7 @@ class __$$PostImplCopyWithImpl<$Res>
     Object? scores = null,
     Object? filter = null,
     Object? uid = null,
+    Object? name = null,
   }) {
     return _then(_$PostImpl(
       imgUrl: null == imgUrl
@@ -127,6 +136,10 @@ class __$$PostImplCopyWithImpl<$Res>
           ? _value.uid
           : uid // ignore: cast_nullable_to_non_nullable
               as String,
+      name: null == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -138,7 +151,8 @@ class _$PostImpl implements _Post {
       {required this.imgUrl,
       required this.scores,
       required this.filter,
-      required this.uid});
+      required this.uid,
+      required this.name});
 
   @override
   final String imgUrl;
@@ -148,10 +162,12 @@ class _$PostImpl implements _Post {
   final String filter;
   @override
   final String uid;
+  @override
+  final String name;
 
   @override
   String toString() {
-    return 'Post(imgUrl: $imgUrl, scores: $scores, filter: $filter, uid: $uid)';
+    return 'Post(imgUrl: $imgUrl, scores: $scores, filter: $filter, uid: $uid, name: $name)';
   }
 
   @override
@@ -162,11 +178,13 @@ class _$PostImpl implements _Post {
             (identical(other.imgUrl, imgUrl) || other.imgUrl == imgUrl) &&
             (identical(other.scores, scores) || other.scores == scores) &&
             (identical(other.filter, filter) || other.filter == filter) &&
-            (identical(other.uid, uid) || other.uid == uid));
+            (identical(other.uid, uid) || other.uid == uid) &&
+            (identical(other.name, name) || other.name == name));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, imgUrl, scores, filter, uid);
+  int get hashCode =>
+      Object.hash(runtimeType, imgUrl, scores, filter, uid, name);
 
   @JsonKey(ignore: true)
   @override
@@ -180,7 +198,8 @@ abstract class _Post implements Post {
       {required final String imgUrl,
       required final Scores scores,
       required final String filter,
-      required final String uid}) = _$PostImpl;
+      required final String uid,
+      required final String name}) = _$PostImpl;
 
   @override
   String get imgUrl;
@@ -190,6 +209,8 @@ abstract class _Post implements Post {
   String get filter;
   @override
   String get uid;
+  @override
+  String get name;
   @override
   @JsonKey(ignore: true)
   _$$PostImplCopyWith<_$PostImpl> get copyWith =>

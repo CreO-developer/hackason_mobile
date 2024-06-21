@@ -20,7 +20,8 @@ class AuthStateNotifier extends StateNotifier<User?> {
   final AuthService _authService;
 
   Future<UserCredential?> registerUser(String email, String password) async {
-    return await _authService.registerUser(email, password);
+    final result = await _authService.registerUser(email, password);
+    return result;
   }
 
   Future<UserCredential?> lgoinUser(String email, String password) async {
