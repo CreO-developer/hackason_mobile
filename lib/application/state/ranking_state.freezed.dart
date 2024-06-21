@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'ranking.dart';
+part of 'ranking_state.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -15,27 +15,32 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
-mixin _$Ranking {
-  List<Post> get shapes => throw _privateConstructorUsedError;
-  List<Post> get comedian => throw _privateConstructorUsedError;
-  List<Post> get anime => throw _privateConstructorUsedError;
+mixin _$RankingState {
+  List<PostState> get shapes => throw _privateConstructorUsedError;
+  List<PostState> get comedian => throw _privateConstructorUsedError;
+  List<PostState> get anime => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
-  $RankingCopyWith<Ranking> get copyWith => throw _privateConstructorUsedError;
+  $RankingStateCopyWith<RankingState> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $RankingCopyWith<$Res> {
-  factory $RankingCopyWith(Ranking value, $Res Function(Ranking) then) =
-      _$RankingCopyWithImpl<$Res, Ranking>;
+abstract class $RankingStateCopyWith<$Res> {
+  factory $RankingStateCopyWith(
+          RankingState value, $Res Function(RankingState) then) =
+      _$RankingStateCopyWithImpl<$Res, RankingState>;
   @useResult
-  $Res call({List<Post> shapes, List<Post> comedian, List<Post> anime});
+  $Res call(
+      {List<PostState> shapes,
+      List<PostState> comedian,
+      List<PostState> anime});
 }
 
 /// @nodoc
-class _$RankingCopyWithImpl<$Res, $Val extends Ranking>
-    implements $RankingCopyWith<$Res> {
-  _$RankingCopyWithImpl(this._value, this._then);
+class _$RankingStateCopyWithImpl<$Res, $Val extends RankingState>
+    implements $RankingStateCopyWith<$Res> {
+  _$RankingStateCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
@@ -53,35 +58,39 @@ class _$RankingCopyWithImpl<$Res, $Val extends Ranking>
       shapes: null == shapes
           ? _value.shapes
           : shapes // ignore: cast_nullable_to_non_nullable
-              as List<Post>,
+              as List<PostState>,
       comedian: null == comedian
           ? _value.comedian
           : comedian // ignore: cast_nullable_to_non_nullable
-              as List<Post>,
+              as List<PostState>,
       anime: null == anime
           ? _value.anime
           : anime // ignore: cast_nullable_to_non_nullable
-              as List<Post>,
+              as List<PostState>,
     ) as $Val);
   }
 }
 
 /// @nodoc
-abstract class _$$RankingImplCopyWith<$Res> implements $RankingCopyWith<$Res> {
-  factory _$$RankingImplCopyWith(
-          _$RankingImpl value, $Res Function(_$RankingImpl) then) =
-      __$$RankingImplCopyWithImpl<$Res>;
+abstract class _$$RankingStateImplCopyWith<$Res>
+    implements $RankingStateCopyWith<$Res> {
+  factory _$$RankingStateImplCopyWith(
+          _$RankingStateImpl value, $Res Function(_$RankingStateImpl) then) =
+      __$$RankingStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({List<Post> shapes, List<Post> comedian, List<Post> anime});
+  $Res call(
+      {List<PostState> shapes,
+      List<PostState> comedian,
+      List<PostState> anime});
 }
 
 /// @nodoc
-class __$$RankingImplCopyWithImpl<$Res>
-    extends _$RankingCopyWithImpl<$Res, _$RankingImpl>
-    implements _$$RankingImplCopyWith<$Res> {
-  __$$RankingImplCopyWithImpl(
-      _$RankingImpl _value, $Res Function(_$RankingImpl) _then)
+class __$$RankingStateImplCopyWithImpl<$Res>
+    extends _$RankingStateCopyWithImpl<$Res, _$RankingStateImpl>
+    implements _$$RankingStateImplCopyWith<$Res> {
+  __$$RankingStateImplCopyWithImpl(
+      _$RankingStateImpl _value, $Res Function(_$RankingStateImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -91,53 +100,53 @@ class __$$RankingImplCopyWithImpl<$Res>
     Object? comedian = null,
     Object? anime = null,
   }) {
-    return _then(_$RankingImpl(
+    return _then(_$RankingStateImpl(
       shapes: null == shapes
           ? _value._shapes
           : shapes // ignore: cast_nullable_to_non_nullable
-              as List<Post>,
+              as List<PostState>,
       comedian: null == comedian
           ? _value._comedian
           : comedian // ignore: cast_nullable_to_non_nullable
-              as List<Post>,
+              as List<PostState>,
       anime: null == anime
           ? _value._anime
           : anime // ignore: cast_nullable_to_non_nullable
-              as List<Post>,
+              as List<PostState>,
     ));
   }
 }
 
 /// @nodoc
 
-class _$RankingImpl implements _Ranking {
-  const _$RankingImpl(
-      {required final List<Post> shapes,
-      required final List<Post> comedian,
-      required final List<Post> anime})
+class _$RankingStateImpl implements _RankingState {
+  const _$RankingStateImpl(
+      {required final List<PostState> shapes,
+      required final List<PostState> comedian,
+      required final List<PostState> anime})
       : _shapes = shapes,
         _comedian = comedian,
         _anime = anime;
 
-  final List<Post> _shapes;
+  final List<PostState> _shapes;
   @override
-  List<Post> get shapes {
+  List<PostState> get shapes {
     if (_shapes is EqualUnmodifiableListView) return _shapes;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_shapes);
   }
 
-  final List<Post> _comedian;
+  final List<PostState> _comedian;
   @override
-  List<Post> get comedian {
+  List<PostState> get comedian {
     if (_comedian is EqualUnmodifiableListView) return _comedian;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_comedian);
   }
 
-  final List<Post> _anime;
+  final List<PostState> _anime;
   @override
-  List<Post> get anime {
+  List<PostState> get anime {
     if (_anime is EqualUnmodifiableListView) return _anime;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_anime);
@@ -145,14 +154,14 @@ class _$RankingImpl implements _Ranking {
 
   @override
   String toString() {
-    return 'Ranking(shapes: $shapes, comedian: $comedian, anime: $anime)';
+    return 'RankingState(shapes: $shapes, comedian: $comedian, anime: $anime)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$RankingImpl &&
+            other is _$RankingStateImpl &&
             const DeepCollectionEquality().equals(other._shapes, _shapes) &&
             const DeepCollectionEquality().equals(other._comedian, _comedian) &&
             const DeepCollectionEquality().equals(other._anime, _anime));
@@ -168,24 +177,24 @@ class _$RankingImpl implements _Ranking {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$RankingImplCopyWith<_$RankingImpl> get copyWith =>
-      __$$RankingImplCopyWithImpl<_$RankingImpl>(this, _$identity);
+  _$$RankingStateImplCopyWith<_$RankingStateImpl> get copyWith =>
+      __$$RankingStateImplCopyWithImpl<_$RankingStateImpl>(this, _$identity);
 }
 
-abstract class _Ranking implements Ranking {
-  const factory _Ranking(
-      {required final List<Post> shapes,
-      required final List<Post> comedian,
-      required final List<Post> anime}) = _$RankingImpl;
+abstract class _RankingState implements RankingState {
+  const factory _RankingState(
+      {required final List<PostState> shapes,
+      required final List<PostState> comedian,
+      required final List<PostState> anime}) = _$RankingStateImpl;
 
   @override
-  List<Post> get shapes;
+  List<PostState> get shapes;
   @override
-  List<Post> get comedian;
+  List<PostState> get comedian;
   @override
-  List<Post> get anime;
+  List<PostState> get anime;
   @override
   @JsonKey(ignore: true)
-  _$$RankingImplCopyWith<_$RankingImpl> get copyWith =>
+  _$$RankingStateImplCopyWith<_$RankingStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:mobile/domain/entities/post.dart';
+import 'package:mobile/application/state/post_state.dart';
 
 class PostScreen extends StatelessWidget {
   const PostScreen({
     super.key,
-    Post? post,
+    this.post,
   });
+
+  final PostState? post;
 
 
   @override
   Widget build(BuildContext context) {
+    print(post);
     return Scaffold(
       appBar: AppBar(
         title: Text('ランキング − 総合'),
@@ -37,7 +40,7 @@ class PostScreen extends StatelessWidget {
             ),
             SizedBox(height: 20),
             Text(
-              '写真の説明1',
+              'ユーザ名${post?.name}',
               style: TextStyle(fontSize: 16),
             ),
             Text(

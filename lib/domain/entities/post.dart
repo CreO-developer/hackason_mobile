@@ -10,6 +10,7 @@ class Post with _$Post {
     required String imgUrl,
     required Scores scores,
     required String filter,
+    required String uid,
   }) = _Post;
 
   factory Post.fromMap(Map<String, dynamic> map) {
@@ -17,6 +18,7 @@ class Post with _$Post {
       imgUrl: map['imgUrl'] ?? '',
       scores: Scores.fromMap(map['scores'] ?? {}),
       filter: map['filter'] ?? '',
+      uid: map['uid'] ?? '',
     );
   }
 }
