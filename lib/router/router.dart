@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile/presentation/notifier/auth_user_notifier.dart';
+import 'package:mobile/presentation/screens/forgot_password_screen.dart';
 import 'package:mobile/presentation/screens/login_screen.dart';
 import 'package:mobile/presentation/screens/account_screen.dart';
 import 'package:mobile/presentation/screens/home_screen.dart';
@@ -108,8 +109,8 @@ GoRouter CustomRouter(WidgetRef ref) {
                     path: '/account',
                     pageBuilder: (context, state) => NoTransitionPage(
                         key: state.pageKey,
-                        // child: const AccountScreen(),
-                        child: ResultScreen()),
+                        child: const AccountScreen(),)
+                        // child: ResultScreen()),
                   ),
                 ],
               ),
@@ -135,11 +136,15 @@ GoRouter CustomRouter(WidgetRef ref) {
           path: '/signup',
           builder: (context, state) => SignUpScreen(),
         ),
+        GoRoute(
+          path: '/forgotPassword',
+          builder: (context, state) => ForgotPasswordScreen(),
+        ),
       ],
       redirect: (context, state) async {
         print('redirecting...');
 
-        if (auth == null && state.fullPath != '/signup') {
+        if (auth == null && state.fullPath != '/signup' && state.fullPath != '/forgotPassword') {
           return '/login';
         }
         return null;

@@ -25,6 +25,10 @@ class AuthService {
     return result;
   }
 
+  Future<UserCredential?> resetPassword(String email) async {
+    await _authRepository.resetPassword(email);
+  }
+
   Future<UserCredential?> logoutUser() async {
     await _authRepository.logoutUser();
   }
