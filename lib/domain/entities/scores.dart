@@ -1,5 +1,4 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'dart:convert';
 
 part 'scores.freezed.dart';
 part 'scores.g.dart';
@@ -15,4 +14,14 @@ class Scores with _$Scores {
   }) = _Scores;
 
   factory Scores.fromJson(Map<String, dynamic> json) => _$ScoresFromJson(json);
+
+  factory Scores.fromMap(Map<String, dynamic> map) {
+    return Scores(
+      faceScore: (map['faceScore'] ?? 0),
+      excludeScore: (map['excludeScore'] ?? 0),
+      peopleScore: (map['peopleScore'] ?? 0),
+      includeScore: (map['includeScore'] ?? 0),
+      originalScore: (map['originalScore'] ?? 0),
+    );
+  }
 }

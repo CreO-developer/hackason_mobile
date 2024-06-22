@@ -44,6 +44,7 @@ class LoginPage extends ConsumerWidget {
                   onPressed: () async {
                     final result = await authNotifier.registerUser(
                         emailController.text, passwordController.text);
+                    print(result);
                     await userInfoNotifier.createUserInfo(result!.user!.uid);
                   },
                 ),

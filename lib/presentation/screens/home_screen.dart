@@ -2,6 +2,7 @@ import 'package:camera/camera.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:mobile/main.dart';
 import 'package:mobile/widget/ButtonWidget.dart';
 import 'package:mobile/widget/CameraPreviewWidget.dart';
@@ -107,10 +108,25 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               ),
             ),
 
-            Container(height: 100), // 10ピクセルのスペース
-            const ButtonWidget(
-              buttonText: "人数選択完了",
-              buttonColor: Color(0xFF54BD6B),
+            ElevatedButton(
+              onPressed: () {
+                setState(() {
+                  // showButton = false; // ボタンを非表示にし、選択ボックスを表示
+                  context.go('/home/question1');
+                });
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF54BD6B), // 背景色を緑に設定
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 31, vertical: 28), // ボタンのサイズ
+              ),
+              child: const Text("GAME START→",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w900,
+                  )), // テキストを太字に設定
+
             ),
           ]
         ]),
