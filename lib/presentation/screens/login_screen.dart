@@ -12,7 +12,6 @@ class LoginPage extends ConsumerWidget {
     final userInfoNotifier = ref.read(userInfoNotifierProvider.notifier);
     final emailController = TextEditingController();
     final passwordController = TextEditingController();
-    print('object');
 
     return Scaffold(
       body: Center(
@@ -24,7 +23,7 @@ class LoginPage extends ConsumerWidget {
             children: <Widget>[
               SizedBox(height: 20),
               Text(
-                '新規登録',
+                'ログイン',
                 style: TextStyle(color: Color(0xFF2D6486), fontSize: 24),
               ),
               SizedBox(height: 20),
