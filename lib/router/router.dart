@@ -13,6 +13,7 @@ import 'package:mobile/presentation/screens/question/question_screen4.dart';
 
 import 'package:mobile/presentation/screens/ranking_screen.dart';
 import 'package:mobile/presentation/screens/result_screen.dart';
+import 'package:mobile/presentation/screens/sign_up_screen.dart';
 import 'package:mobile/widget/BottomNavWidget.dart';
 
 GoRouter CustomRouter(WidgetRef ref) {
@@ -130,11 +131,15 @@ GoRouter CustomRouter(WidgetRef ref) {
           path: '/login',
           builder: (context, state) => LoginPage(),
         ),
+        GoRoute(
+          path: '/signup',
+          builder: (context, state) => SignUpScreen(),
+        ),
       ],
       redirect: (context, state) async {
         print('redirecting...');
 
-        if (auth == null) {
+        if (auth == null && state.fullPath != '/signup') {
           return '/login';
         }
         return null;
