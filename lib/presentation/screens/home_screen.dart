@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile/main.dart';
+import 'package:mobile/widget/ButtonWidget.dart';
 import 'package:mobile/widget/CameraPreviewWidget.dart';
 import 'package:mobile/widget/TitleWidget.dart';
 
@@ -106,6 +107,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 },
               ),
             ),
+
             ElevatedButton(
               onPressed: () {
                 setState(() {
@@ -124,6 +126,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     fontSize: 20,
                     fontWeight: FontWeight.w900,
                   )), // テキストを太字に設定
+
             ),
           ]
         ]),
