@@ -21,7 +21,8 @@ GoRouter CustomRouter(WidgetRef ref) {
   return GoRouter(
       // debugLogDiagnostics: true はデバッグ用
       debugLogDiagnostics: true,
-      initialLocation: '/ranking',
+      // initialLocation: '/ranking',
+      initialLocation: '/account',
       // パスと画面の組み合わせ
 
       routes: [
@@ -100,15 +101,14 @@ GoRouter CustomRouter(WidgetRef ref) {
                 ],
               ),
               // likeブランチ
-
               StatefulShellBranch(
                 routes: [
                   GoRoute(
                     path: '/account',
                     pageBuilder: (context, state) => NoTransitionPage(
-                      key: state.pageKey,
-                      child: const AccountScreen(),
-                    ),
+                        key: state.pageKey,
+                        // child: const AccountScreen(),
+                        child: ResultScreen()),
                   ),
                 ],
               ),
