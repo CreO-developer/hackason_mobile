@@ -28,6 +28,10 @@ class AuthStateNotifier extends StateNotifier<User?> {
     return await _authService.loginUser(email, password);
   }
 
+  Future<UserCredential?> resetPassword(String email) async {
+    return await _authService.resetPassword(email);
+  }
+
   Future<void> logoutUser() async {
     await _authService.logoutUser();
   }

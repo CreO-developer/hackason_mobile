@@ -38,6 +38,16 @@ class AuthDataSource implements AuthRepository {
   }
 
   @override
+  Future<void> resetPassword(String email) async {
+    try {
+      FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
+
+  @override
   Future<void> logoutUser() async {
     try {
       FirebaseAuth.instance.signOut();

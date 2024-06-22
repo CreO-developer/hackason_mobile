@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -93,16 +94,19 @@ class SignUpScreen extends ConsumerWidget {
                   },
                 ),
               ),
-              SizedBox(height: 20),
-              Container(
-                width: double.infinity,
-                child: ElevatedButton(
-                  child: Text('ログイン'),
-                  onPressed: () {
-                    context.push('/login');
-                  },
+              SizedBox(height: 40),
+              RichText(
+                text: TextSpan(
+                  children: [
+                    TextSpan(text: "既にアカウントをお持ちの方は", style: TextStyle(color: Color(0xFFC93429), fontSize: 12, fontWeight: FontWeight.bold)),
+                    TextSpan(text: "こちら", style: TextStyle(color: Color(0xFFC93429),decoration: TextDecoration.underline, fontSize: 12, fontWeight: FontWeight.bold),
+                    recognizer: TapGestureRecognizer()..onTap = () {
+                      context.push('/login');
+                      },
+                    ),
+                  ],
                 ),
-              ),
+              )
             ],
           ),
         ),

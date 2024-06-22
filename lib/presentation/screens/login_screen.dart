@@ -1,4 +1,5 @@
 // login_page.dart
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -77,16 +78,32 @@ class LoginPage extends ConsumerWidget {
                   },
                 ),
               ),
-              SizedBox(height: 20),
-              Container(
-                width: double.infinity,
-                child: ElevatedButton(
-                  child: Text('ユーザー登録'),
-                  onPressed: () {
-                    context.push('/signup');
-                  },
+              SizedBox(height: 40),
+              RichText(
+                text: TextSpan(
+                  children: [
+                    TextSpan(text: "アカウントの作成は", style: TextStyle(color: Color(0xFFC93429), fontSize: 12, fontWeight: FontWeight.bold)),
+                    TextSpan(text: "こちら", style: TextStyle(color: Color(0xFFC93429),decoration: TextDecoration.underline, fontSize: 12, fontWeight: FontWeight.bold),
+                    recognizer: TapGestureRecognizer()..onTap = () {
+                      context.push('/signup');
+                      },
+                    ),
+                  ],
                 ),
               ),
+              SizedBox(height: 10),
+              RichText(
+                text: TextSpan(
+                  children: [
+                    TextSpan(text: "パスワードを忘れた場合は", style: TextStyle(color: Color(0xFFC93429), fontSize: 12, fontWeight: FontWeight.bold)),
+                    TextSpan(text: "こちら", style: TextStyle(color: Color(0xFFC93429),decoration: TextDecoration.underline, fontSize: 12, fontWeight: FontWeight.bold),
+                    recognizer: TapGestureRecognizer()..onTap = () {
+                      context.push('/forgotPassword');
+                      },
+                    ),
+                  ],
+                ),
+              )
             ],
           ),
         ),
