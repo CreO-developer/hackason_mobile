@@ -42,7 +42,7 @@ class QuestionScreen4 extends ConsumerWidget {
 
     Future<void> upload(imagePath) async {
       // 画像を取得できた場合一枚目をFirebaseStorageにアップロードする
-      // FirebaseStorage storage = FirebaseStorage.instance;
+      FirebaseStorage storage = FirebaseStorage.instance;
       var uuid = Uuid();
       if (imagePath != null) {
         final uid = uuid.v4(); // Generate a unique identifier
@@ -53,8 +53,7 @@ class QuestionScreen4 extends ConsumerWidget {
           return;
         }
         try {
-          // print("フィアルを送ります");
-          // await storage.ref('$uid.jpeg').putFile(imageFile);
+          await storage.ref('$uid.jpeg').putFile(imageFile);
           // 得点のapiを叩く
           final data = {
             'theme': theme,
