@@ -11,6 +11,7 @@ import 'package:mobile/widget/result_q1q2.dart';
 
 final imageStateProvider = StateProvider<bool>((ref) => false);
 final imageUrlProvider = StateProvider<String>((ref) => "");
+final imgUrlProvider = StateProvider<String>((ref) => "");
 
 class ResultScreen extends ConsumerWidget {
   const ResultScreen({Key? key}) : super(key: key);
@@ -19,6 +20,7 @@ class ResultScreen extends ConsumerWidget {
     // Replace 'path/to/your/image.jpg' with the actual path to your image in Firebase Storage
     Reference ref = FirebaseStorage.instance.ref().child(imagePath);
     String imageUrl = await ref.getDownloadURL();
+
     return imageUrl;
   }
 
@@ -29,6 +31,7 @@ class ResultScreen extends ConsumerWidget {
 
     final imageState = ref.watch(imageStateProvider);
     final imageUrl = ref.watch(imageUrlProvider);
+    final imgUrl = ref.watch(imgUrlProvider);
 
     // mockデータ
     List<UserScoresState> mockUserScores = [
@@ -189,6 +192,8 @@ class ResultScreen extends ConsumerWidget {
                           mockUserScores[pageController.page!.round()].imgUrl);
                       ref.read(imageUrlProvider.notifier).state = imageUrl;
                       ref.read(imageStateProvider.notifier).state = true;
+                      ref.read(imgUrlProvider.notifier).state =
+                          mockUserScores[pageController.page!.round()].imgUrl;
                     },
                   ),
                   SizedBox(width: 20), // Add
@@ -274,8 +279,9 @@ class ResultScreen extends ConsumerWidget {
                               fontWeight: FontWeight.bold),
                         ),
                         onPressed: () {
-                          // Perform your registration logic here
-                          //
+                          ref
+                              .read(userScoresNotiferProvider.notifier)
+                              .scorePost(ref.read(imgUrlProvider));
                         },
                       ),
                     ),

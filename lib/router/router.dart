@@ -109,7 +109,7 @@ GoRouter CustomRouter(WidgetRef ref) {
                     pageBuilder: (context, state) => NoTransitionPage(
                         key: state.pageKey,
                         // child: const AccountScreen(),
-                        child: ResultScreen()),
+                        child: AccountScreen()),
                   ),
                 ],
               ),

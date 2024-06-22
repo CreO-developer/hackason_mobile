@@ -14,7 +14,6 @@ import 'package:uuid/uuid.dart';
 class QuestionScreen2 extends ConsumerWidget {
   const QuestionScreen2({Key? key}) : super(key: key);
 
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final CameraDescription? camera = ref.watch(cameraProvider);
@@ -43,7 +42,7 @@ class QuestionScreen2 extends ConsumerWidget {
 
     Future<void> upload(imagePath) async {
       // 画像を取得できた場合一枚目をFirebaseStorageにアップロードする
-      // FirebaseStorage storage = FirebaseStorage.instance;
+      FirebaseStorage storage = FirebaseStorage.instance;
       var uuid = Uuid();
       if (imagePath != null) {
         final uid = uuid.v4(); // Generate a unique identifier
@@ -54,8 +53,7 @@ class QuestionScreen2 extends ConsumerWidget {
           return;
         }
         try {
-          // print("フィアルを送ります");
-          // await storage.ref('$uid.jpeg').putFile(imageFile);
+          await storage.ref('$uid.jpeg').putFile(imageFile);
           // 得点のapiを叩く
           final data = {
             'theme': theme,
