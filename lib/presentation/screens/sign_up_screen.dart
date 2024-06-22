@@ -1,22 +1,20 @@
-// login_page.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile/presentation/notifier/auth_user_notifier.dart';
 import 'package:mobile/presentation/notifier/user_info_notifier.dart';
 
-class LoginPage extends ConsumerWidget {
+class SignUpScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final authNotifier = ref.read(authNotifierProvider.notifier);
     final userInfoNotifier = ref.read(userInfoNotifierProvider.notifier);
     final emailController = TextEditingController();
     final passwordController = TextEditingController();
-    print('object');
 
     return Scaffold(
       body: Center(
-        child: Container(
+        child: SingleChildScrollView(
           padding: EdgeInsets.all(50),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -28,6 +26,24 @@ class LoginPage extends ConsumerWidget {
                 style: TextStyle(color: Color(0xFF2D6486), fontSize: 24),
               ),
               SizedBox(height: 20),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: 20),
+                  Text(
+                    'ニックネーム',
+                    style: TextStyle(
+                        color: Color(0xFF54BD6B),
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18),
+                  ),
+                  TextFormField(
+                    onChanged: (value) {
+                      userInfoNotifier.setName(value);
+                    },
+                  ),
+                ],
+              ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -68,13 +84,12 @@ class LoginPage extends ConsumerWidget {
               Container(
                 width: double.infinity,
                 child: ElevatedButton(
-                  child: Text('ログイン'),
+                  child: Text('ユーザ登録'),
                   onPressed: () async {
-                    final result = await authNotifier.lgoinUser(
+                    final result = await authNotifier.registerUser(
                         emailController.text, passwordController.text);
-                    if (result == null) {
-                      print('ログインに失敗しました');
-                    }
+                    print(result);
+                    await userInfoNotifier.createUserInfo(result!.user!.uid);
                   },
                 ),
               ),
@@ -82,9 +97,9 @@ class LoginPage extends ConsumerWidget {
               Container(
                 width: double.infinity,
                 child: ElevatedButton(
-                  child: Text('ユーザー登録'),
+                  child: Text('ログイン'),
                   onPressed: () {
-                    context.push('/signup');
+                    context.push('/login');
                   },
                 ),
               ),
