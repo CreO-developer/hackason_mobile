@@ -2,6 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile/application/service/score_service.dart';
+import 'package:mobile/application/service/user_info_service.dart';
 import 'package:mobile/application/state/user_score.dart';
 import 'package:mobile/domain/entities/scores.dart';
 import 'package:mobile/domain/entities/user_info.dart';
@@ -17,20 +18,24 @@ final userScoresNotiferProvider =
 
   return UserScoresStateNotifier(
     scoreService: ref.read(scoreService),
-
+    userInfoService: ref.read(userInfoService),
     authUser: authUser, // Pass the user to the notifier
   );
 });
 
 class UserScoresStateNotifier extends StateNotifier<List<UserScoresState>> {
   UserScoresStateNotifier(
-      {required ScoreService scoreService, required User? authUser})
+      {required ScoreService scoreService,
+      required User? authUser,
+      required userInfoService})
       : _scoreService = scoreService,
         _authUser = authUser,
+        _userInfoService = userInfoService,
         super([]);
 
   final ScoreService _scoreService;
   final User? _authUser;
+  final UserInfoService _userInfoService;
 
   void resetScores() {
     state = [];
@@ -81,7 +86,7 @@ class UserScoresStateNotifier extends StateNotifier<List<UserScoresState>> {
 
     if (matchingScore != null) {
       // If a matching score is found
-
+      await _userInfoService.createPost(_authUser!.uid, matchingScore);
       return "一致するスコアが見つかりました: ${matchingScore.scores.includeScore}";
     } else {
       // If no matching score is found

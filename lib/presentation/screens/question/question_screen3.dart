@@ -21,22 +21,27 @@ class QuestionScreen3 extends ConsumerWidget {
     // 現在のスコアの長さに基づいてフィルターとテーマを取得
     String filter;
     String theme;
+    Map<String, String> questionAndFilter = {};
     switch (scoresNotifier.state.length) {
       case 0:
-        filter = QuestionConstants.getRandomQuestion1()['filter']!;
-        theme = QuestionConstants.getRandomQuestion1()['theme']!;
+        questionAndFilter = QuestionConstants.getRandomQuestion1();
+        theme = questionAndFilter['theme']!;
+        filter = questionAndFilter['filter']!;
         break;
       case 1:
-        filter = QuestionConstants.getRandomQuestion2()['filter']!;
-        theme = QuestionConstants.getRandomQuestion2()['theme']!;
+        questionAndFilter = QuestionConstants.getRandomQuestion2();
+        theme = questionAndFilter['theme']!;
+        filter = questionAndFilter['filter']!;
         break;
       case 2:
-        filter = QuestionConstants.getRandomQuestion3()['filter']!;
-        theme = QuestionConstants.getRandomQuestion3()['theme']!;
+        questionAndFilter = QuestionConstants.getRandomQuestion3();
+        theme = questionAndFilter['theme']!;
+        filter = questionAndFilter['filter']!;
         break;
       default:
-        filter = QuestionConstants.getRandomQuestion4()['filter']!;
-        theme = QuestionConstants.getRandomQuestion4()['theme']!;
+        questionAndFilter = QuestionConstants.getRandomQuestion4();
+        theme = questionAndFilter['theme']!;
+        filter = questionAndFilter['filter']!;
         break;
     }
 

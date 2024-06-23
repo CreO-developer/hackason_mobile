@@ -27,6 +27,8 @@ class UserInfoService {
   }
 
   Future<void> createPost(String uid, UserScoresState userStateScore) async {
+    print(uid);
+    print(userStateScore);
     final post = Post(
       name: userStateScore.theme,
       filter: userStateScore.filter,

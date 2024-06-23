@@ -28,6 +28,9 @@ class CameraPreviewWidget extends StatefulWidget {
 class _CameraPreviewWidgetState extends State<CameraPreviewWidget> {
   late CameraController _controller;
   late Future<void> _initializeControllerFuture;
+  late Timer _timer;
+  int _remainingTime = 30;
+  bool _isButtonDisabled = false; // Add a flag to track button state
 
   @override
   void initState() {
@@ -40,13 +43,28 @@ class _CameraPreviewWidgetState extends State<CameraPreviewWidget> {
     _initializeControllerFuture = _controller.initialize().then((_) {
       // After the camera is initialized, show the theme modal
       _showThemeModal();
+      _startTimer();
     });
   }
 
   @override
   void dispose() {
     _controller.dispose();
+    _timer.cancel();
     super.dispose();
+  }
+
+  void _startTimer() {
+    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      setState(() {
+        if (_remainingTime > 0) {
+          _remainingTime--;
+        } else {
+          _timer.cancel();
+          _capturePicture();
+        }
+      });
+    });
   }
 
   void _showThemeModal() {
@@ -64,11 +82,33 @@ class _CameraPreviewWidgetState extends State<CameraPreviewWidget> {
         );
       },
     );
+  }
 
-    // Automatically close the dialog after 5 seconds
-    // Timer(Duration(seconds: 5), () {
-    //   Navigator.of(context, rootNavigator: true).pop();
-    // });
+  Future<void> _capturePicture() async {
+    if (_isButtonDisabled) return; // Check if the button is disabled
+    _isButtonDisabled = true; // Disable the button
+    try {
+      await _initializeControllerFuture;
+      final image = await _controller.takePicture();
+      await widget.upload(image.path);
+      await _controller.dispose();
+      await _controller.dispose();
+      await _controller.dispose();
+      _timer.cancel();
+
+      if (widget.questionCount == 4) {
+        print('Go to result');
+        GoRouter.of(context).go('/home/result');
+        return;
+      } else {
+        GoRouter.of(context).go('/home/question${widget.questionCount + 1}');
+        return;
+      }
+    } catch (e) {
+      print(e);
+    } finally {
+      _isButtonDisabled = false; // Re-enable the button after processing
+    }
   }
 
   @override
@@ -86,9 +126,50 @@ class _CameraPreviewWidgetState extends State<CameraPreviewWidget> {
                   Positioned.fill(
                     child: Opacity(
                       opacity: 0.5,
-                      child: Image.asset(
-                        'assets/images/${widget.filter}.png',
-                        fit: BoxFit.cover,
+                      child: ColorFiltered(
+                        colorFilter: ColorFilter.mode(
+                          _remainingTime <= 5
+                              ? Colors.red.withOpacity(0.5)
+                              : Colors.transparent,
+                          BlendMode.srcATop,
+                        ),
+                        child: Image.asset(
+                          'assets/images/${widget.filter}.png',
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    top: 20,
+                    left: 20,
+                    child: Container(
+                      padding: EdgeInsets.fromLTRB(10, 5, 10, 5), //
+                      decoration: BoxDecoration(
+                        color: _remainingTime <= 5
+                            ? Color(0xFFC9342A)
+                            : Color(0xFF54BD6B),
+                        borderRadius:
+                            BorderRadius.circular(20), // More rounded corners
+                      ),
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.schedule,
+                            color: Colors.white,
+                          ),
+                          SizedBox(width: 8),
+                          Text(
+                            '${_remainingTime}s',
+                            style: TextStyle(
+                              color: _remainingTime <= 5
+                                  ? Colors.red
+                                  : Colors
+                                      .white, // Red color if time is 5 or less
+                              fontSize: 20,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
@@ -106,22 +187,14 @@ class _CameraPreviewWidgetState extends State<CameraPreviewWidget> {
         child: Container(
           margin: const EdgeInsets.only(bottom: 16.0),
           child: FloatingActionButton(
-            onPressed: () async {
-              try {
-                await _initializeControllerFuture;
-                final image = await _controller.takePicture();
-                await widget.upload(image.path);
-                await _controller.dispose(); // カメラを解放
-                if (widget.questionCount == 4) {
-                  GoRouter.of(context).go('/home/result'); // 画面遷移
-                  return;
-                }
-                GoRouter.of(context)
-                    .go('/home/question${widget.questionCount + 1}'); // 画面遷移
-              } catch (e) {
-                print(e);
-              }
-            },
+            onPressed: _capturePicture,
+            backgroundColor: Colors.transparent,
+            foregroundColor: Color(0xFF373A4D),
+            elevation: 0,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(30.0)), // 角を丸くする
+              side: BorderSide(color: Color(0xFF373A4D), width: 5), // 白い線で枠を作成
+            ),
             child: const Icon(Icons.camera_alt),
           ),
         ),

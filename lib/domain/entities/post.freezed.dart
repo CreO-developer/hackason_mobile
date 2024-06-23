@@ -14,6 +14,10 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
+Post _$PostFromJson(Map<String, dynamic> json) {
+  return _Post.fromJson(json);
+}
+
 /// @nodoc
 mixin _$Post {
   String get imgUrl => throw _privateConstructorUsedError;
@@ -22,6 +26,7 @@ mixin _$Post {
   String get uid => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
 
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $PostCopyWith<Post> get copyWith => throw _privateConstructorUsedError;
 }
@@ -146,6 +151,7 @@ class __$$PostImplCopyWithImpl<$Res>
 
 /// @nodoc
 
+@JsonSerializable(explicitToJson: true)
 class _$PostImpl implements _Post {
   const _$PostImpl(
       {required this.imgUrl,
@@ -153,6 +159,9 @@ class _$PostImpl implements _Post {
       required this.filter,
       required this.uid,
       required this.name});
+
+  factory _$PostImpl.fromJson(Map<String, dynamic> json) =>
+      _$$PostImplFromJson(json);
 
   @override
   final String imgUrl;
@@ -182,6 +191,7 @@ class _$PostImpl implements _Post {
             (identical(other.name, name) || other.name == name));
   }
 
+  @JsonKey(ignore: true)
   @override
   int get hashCode =>
       Object.hash(runtimeType, imgUrl, scores, filter, uid, name);
@@ -191,6 +201,13 @@ class _$PostImpl implements _Post {
   @pragma('vm:prefer-inline')
   _$$PostImplCopyWith<_$PostImpl> get copyWith =>
       __$$PostImplCopyWithImpl<_$PostImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$PostImplToJson(
+      this,
+    );
+  }
 }
 
 abstract class _Post implements Post {
@@ -200,6 +217,8 @@ abstract class _Post implements Post {
       required final String filter,
       required final String uid,
       required final String name}) = _$PostImpl;
+
+  factory _Post.fromJson(Map<String, dynamic> json) = _$PostImpl.fromJson;
 
   @override
   String get imgUrl;

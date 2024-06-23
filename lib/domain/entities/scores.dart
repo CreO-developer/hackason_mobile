@@ -14,6 +14,15 @@ class Scores with _$Scores {
   }) = _Scores;
 
   factory Scores.fromJson(Map<String, dynamic> json) => _$ScoresFromJson(json);
+  Map<String, dynamic> toJson() {
+    return {
+      'includeScore': includeScore,
+      'excludeScore': excludeScore,
+      'peopleScore': peopleScore,
+      'originalScore': originalScore,
+      'faceScore': faceScore,
+    };
+  }
 
   factory Scores.fromMap(Map<String, dynamic> map) {
     return Scores(

@@ -32,72 +32,23 @@ class ResultScreen extends ConsumerWidget {
     final imageState = ref.watch(imageStateProvider);
     final imageUrl = ref.watch(imageUrlProvider);
     final imgUrl = ref.watch(imgUrlProvider);
-
-    // mockデータ
-    List<UserScoresState> mockUserScores = [
-      UserScoresState(
-        imgUrl: '0052ff85-d6e2-4bf3-87f6-55fcdbd7d49c.jpeg',
-        filter: 'shape-2',
-        theme: 'まる作ってください',
-        scores: Scores(
-            includeScore: 10,
-            excludeScore: 10,
-            peopleScore: 7,
-            originalScore: 7,
-            faceScore: 0),
-      ),
-      UserScoresState(
-        imgUrl: '0052ff85-d6e2-4bf3-87f6-55fcdbd7d49c.jpegg',
-        filter: 'kumitaiso-2',
-        theme: '組体操3を作れ',
-        scores: Scores(
-            includeScore: 15,
-            excludeScore: 15,
-            peopleScore: 0,
-            originalScore: 0,
-            faceScore: 0),
-      ),
-      UserScoresState(
-        imgUrl: '0052ff85-d6e2-4bf3-87f6-55fcdbd7d49c.jpeg',
-        filter: 'comedian-2',
-        theme: '芸人でこの形2',
-        scores: Scores(
-            includeScore: 35,
-            excludeScore: 35,
-            peopleScore: 10,
-            originalScore: 10,
-            faceScore: 10),
-      ),
-      UserScoresState(
-        imgUrl: '0052ff85-d6e2-4bf3-87f6-55fcdbd7d49c.jpeg',
-        filter: 'anime-3',
-        theme: 'アニメ作ってください3',
-        scores: Scores(
-            includeScore: 20,
-            excludeScore: 20,
-            peopleScore: 10,
-            originalScore: 10,
-            faceScore: 5),
-      ),
-    ];
-
+    print(scoresNotifier);
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('リザルト'),
+        centerTitle: true,
+        backgroundColor: const Color(0xFFFCF1D4),
+      ),
       body: Column(children: [
-        const SizedBox(height: 80),
-        Text(imageState ? "" : "リザルト",
-            style: (TextStyle(
-              fontSize: 20, fontWeight: FontWeight.bold, // フォントの太さをboldに設定
-              color: Color(0xFF373A4D),
-            ))),
         SizedBox(
           height: 450, // ここでPageViewの高さを指定
           child: Stack(
             children: [
               PageView.builder(
                 controller: pageController,
-                itemCount: mockUserScores.length,
+                itemCount: scoresNotifier.length,
                 itemBuilder: (_, index) {
-                  final score = mockUserScores[index];
+                  final score = scoresNotifier[index];
                   return index == 0 || index == 1
                       ? SizedBox(
                           width: 330,
@@ -156,8 +107,7 @@ class ResultScreen extends ConsumerWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: List<Widget>.generate(
-                    // scoresNotifier.length,
-                    mockUserScores.length,
+                    scoresNotifier.length,
                     (index) => buildIndicator(index ==
                         (pageController.page ?? pageController.initialPage)
                             .round()),
@@ -189,11 +139,11 @@ class ResultScreen extends ConsumerWidget {
                     buttonColor: Color(0xFF54BD6B),
                     onPress: () async {
                       final imageUrl = await _fetchImageUrl(
-                          mockUserScores[pageController.page!.round()].imgUrl);
+                          scoresNotifier[pageController.page!.round()].imgUrl);
                       ref.read(imageUrlProvider.notifier).state = imageUrl;
                       ref.read(imageStateProvider.notifier).state = true;
                       ref.read(imgUrlProvider.notifier).state =
-                          mockUserScores[pageController.page!.round()].imgUrl;
+                          scoresNotifier[pageController.page!.round()].imgUrl;
                     },
                   ),
                   SizedBox(width: 20), // Add
@@ -282,6 +232,7 @@ class ResultScreen extends ConsumerWidget {
                           ref
                               .read(userScoresNotiferProvider.notifier)
                               .scorePost(ref.read(imgUrlProvider));
+                          Navigator.of(context).pop();
                         },
                       ),
                     ),

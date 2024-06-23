@@ -29,23 +29,27 @@ class _QuestionScreen1State extends ConsumerState<QuestionScreen1> {
     final scoresNotifier = ref.read(userScoresNotiferProvider.notifier);
     String filter;
     String theme;
-
+    Map<String, String> questionAndFilter = {};
     switch (scoresNotifier.state.length) {
       case 0:
-        filter = QuestionConstants.getRandomQuestion1()['filter']!;
-        theme = QuestionConstants.getRandomQuestion1()['theme']!;
+        questionAndFilter = QuestionConstants.getRandomQuestion1();
+        theme = questionAndFilter['theme']!;
+        filter = questionAndFilter['filter']!;
         break;
       case 1:
-        filter = QuestionConstants.getRandomQuestion2()['filter']!;
-        theme = QuestionConstants.getRandomQuestion2()['theme']!;
+        questionAndFilter = QuestionConstants.getRandomQuestion2();
+        theme = questionAndFilter['theme']!;
+        filter = questionAndFilter['filter']!;
         break;
       case 2:
-        filter = QuestionConstants.getRandomQuestion3()['filter']!;
-        theme = QuestionConstants.getRandomQuestion3()['theme']!;
+        questionAndFilter = QuestionConstants.getRandomQuestion3();
+        theme = questionAndFilter['theme']!;
+        filter = questionAndFilter['filter']!;
         break;
       default:
-        filter = QuestionConstants.getRandomQuestion4()['filter']!;
-        theme = QuestionConstants.getRandomQuestion4()['theme']!;
+        questionAndFilter = QuestionConstants.getRandomQuestion4();
+        theme = questionAndFilter['theme']!;
+        filter = questionAndFilter['filter']!;
         break;
     }
 
@@ -56,7 +60,7 @@ class _QuestionScreen1State extends ConsumerState<QuestionScreen1> {
       if (imagePath != null) {
         final uid = uuid.v4();
         final imageFile = File(imagePath);
-
+        print("Uploading image: $imagePath");
         if (!imageFile.existsSync()) {
           print("File does not exist: $imagePath");
           return;
@@ -70,12 +74,7 @@ class _QuestionScreen1State extends ConsumerState<QuestionScreen1> {
             'imgUrl': '$uid.jpeg'
           };
           await scoresNotifier.submitString(data);
-          // if (mounted) {
-          //   GoRouter.of(context).push(
-          //       '/home/question2'); // Assuming '/question2' is the correct route
-          // }
-
-          // await Future.delayed(Duration(seconds: 2));
+          return;
         } catch (e) {
           print("Error uploading image: $e");
           if (mounted) {
