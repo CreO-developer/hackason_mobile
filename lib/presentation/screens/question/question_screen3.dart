@@ -67,7 +67,7 @@ class QuestionScreen3 extends ConsumerWidget {
             'imgUrl': '$uid.jpeg',
           };
           await scoresNotifier.submitString(data);
-
+          return;
           // GoRouter.of(context).refresh();
         } catch (e) {
           print(e);
