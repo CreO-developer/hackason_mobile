@@ -42,7 +42,7 @@ class UserInfoDataSource implements UserInfoRepository {
   Future<void> createPost(String uid, Post post) async {
     try {
       final result = await db.collection('users').doc(uid).update({
-        'posts': FieldValue.arrayUnion([post]),
+        'posts': FieldValue.arrayUnion([post.toJson()]),
       });
       return result;
     } catch (e) {

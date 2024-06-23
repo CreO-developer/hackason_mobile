@@ -13,7 +13,7 @@ class _ScoreRepository implements ScoreRepository {
     this._dio, {
     this.baseUrl,
   }) {
-    baseUrl ??= 'http://192.168.0.225:8000';
+    baseUrl ??= 'http://192.168.1.85:8000';
   }
 
   final Dio _dio;
@@ -34,7 +34,7 @@ class _ScoreRepository implements ScoreRepository {
     )
         .compose(
           _dio.options,
-          '/mock/question1',
+          '/question1',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -57,7 +57,7 @@ class _ScoreRepository implements ScoreRepository {
     )
         .compose(
           _dio.options,
-          '/mock/question2',
+          '/question2',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -80,7 +80,7 @@ class _ScoreRepository implements ScoreRepository {
     )
         .compose(
           _dio.options,
-          '/mock/question3',
+          '/question3',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -103,7 +103,7 @@ class _ScoreRepository implements ScoreRepository {
     )
         .compose(
           _dio.options,
-          '/mock/question4',
+          '/question4',
           queryParameters: queryParameters,
           data: _data,
         )
