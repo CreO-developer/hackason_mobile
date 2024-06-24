@@ -1,9 +1,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile/application/service/user_info_service.dart';
+import 'package:mobile/domain/entities/post.dart';
 
 import '../../domain/entities/user_info.dart';
 
-final userInfoNotifierProvider = 
+final userInfoNotifierProvider =
     StateNotifierProvider<UserInfoStateNotifier, UserInfo?>((ref) {
   return UserInfoStateNotifier(userInfoService: ref.read(userInfoService));
 });
@@ -29,6 +30,22 @@ class UserInfoStateNotifier extends StateNotifier<UserInfo?> {
 
   Future<void> setUserInfo(String uid) async {
     final userInfo = await _userInfoService.getUserInfo(uid);
-    state = state?.copyWith(name: userInfo!.name, email: userInfo.email, posts: userInfo.posts, is_show_attention_modal: userInfo.is_show_attention_modal);
+    state = state?.copyWith(
+        name: userInfo!.name,
+        email: userInfo.email,
+        posts: userInfo.posts,
+        is_show_attention_modal: userInfo.is_show_attention_modal);
+  }
+
+  Future<void> resetPost(String? uid, int? index) async {
+    if (index != null &&
+        uid != null &&
+        index >= 0 &&
+        index < state!.posts.length) {
+      List<Post> updatedPosts = List.from(state!.posts);
+      updatedPosts.removeAt(index);
+      state = state!.copyWith(posts: updatedPosts);
+      await _userInfoService.resetPost(uid, updatedPosts);
+    }
   }
 }

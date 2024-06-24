@@ -89,8 +89,17 @@ class SignUpScreen extends ConsumerWidget {
                   onPressed: () async {
                     final result = await authNotifier.registerUser(
                         emailController.text, passwordController.text);
-                    print(result);
-                    await userInfoNotifier.createUserInfo(result!.user!.uid);
+                    if (result == null) {
+                      print('ユーザ登録に失敗しました。');
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('ユーザ登録に失敗しました。'),
+                        ),
+                      );
+                    } else {
+                      await userInfoNotifier.createUserInfo(result!.user!.uid);
+                      await userInfoNotifier.setUserInfo(result!.user!.uid);
+                    }
                   },
                 ),
               ),
@@ -98,11 +107,23 @@ class SignUpScreen extends ConsumerWidget {
               RichText(
                 text: TextSpan(
                   children: [
-                    TextSpan(text: "既にアカウントをお持ちの方は", style: TextStyle(color: Color(0xFFC93429), fontSize: 12, fontWeight: FontWeight.bold)),
-                    TextSpan(text: "こちら", style: TextStyle(color: Color(0xFFC93429),decoration: TextDecoration.underline, fontSize: 12, fontWeight: FontWeight.bold),
-                    recognizer: TapGestureRecognizer()..onTap = () {
-                      context.push('/login');
-                      },
+                    TextSpan(
+                        text: "既にアカウントをお持ちの方は",
+                        style: TextStyle(
+                            color: Color(0xFFC93429),
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold)),
+                    TextSpan(
+                      text: "こちら",
+                      style: TextStyle(
+                          color: Color(0xFFC93429),
+                          decoration: TextDecoration.underline,
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold),
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () {
+                          context.push('/login');
+                        },
                     ),
                   ],
                 ),

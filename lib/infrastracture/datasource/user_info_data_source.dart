@@ -1,5 +1,4 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mobile/application/state/user_score.dart';
 import 'package:mobile/domain/entities/post.dart';
 import 'package:mobile/domain/entities/user_info.dart';
 import 'package:mobile/domain/repository/user_info_repository.dart';
@@ -43,6 +42,19 @@ class UserInfoDataSource implements UserInfoRepository {
     try {
       final result = await db.collection('users').doc(uid).update({
         'posts': FieldValue.arrayUnion([post.toJson()]),
+      });
+      return result;
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
+
+  @override
+  Future<void> resetPost(String uid, List<Post> posts) async {
+    try {
+      final result = await db.collection('users').doc(uid).update({
+        'posts': posts,
       });
       return result;
     } catch (e) {
