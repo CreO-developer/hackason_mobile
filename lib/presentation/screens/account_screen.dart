@@ -1,9 +1,9 @@
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile/presentation/notifier/auth_user_notifier.dart';
 import 'package:mobile/presentation/notifier/user_info_notifier.dart';
 import 'package:mobile/presentation/screens/post_screen.dart';
+import 'package:mobile/utils/get_image_url.dart';
 
 class AccountScreen extends ConsumerStatefulWidget {
   const AccountScreen({super.key});
@@ -32,13 +32,6 @@ class AccountScreenState extends ConsumerState<AccountScreen> {
     final authNotifier = ref.read(authNotifierProvider.notifier);
     final authState = ref.watch(authNotifierProvider);
     final userInfoState = ref.watch(userInfoNotifierProvider);
-
-    Future<String> _getImageUrl(String imgUrl) async {
-      FirebaseStorage storage = FirebaseStorage.instance;
-      Reference imageRef = storage.ref().child(imgUrl);
-      String imageUrl = await imageRef.getDownloadURL();
-      return imageUrl;
-    }
 
     return Scaffold(
       appBar: AppBar(
@@ -89,7 +82,7 @@ class AccountScreenState extends ConsumerState<AccountScreen> {
           //     itemCount: userInfoState?.posts.length ?? 0,
           //     itemBuilder: (context, index) {
           //       return FutureBuilder(
-          //         future: _getImageUrl(userInfoState?.posts[index].imgUrl ?? ''),
+          //         future: getImageUrl(userInfoState?.posts[index].imgUrl ?? ''),
           //         builder: (context, snapshot) {
           //           if (snapshot.connectionState == ConnectionState.waiting) {
           //             return Center(child: CircularProgressIndicator());
