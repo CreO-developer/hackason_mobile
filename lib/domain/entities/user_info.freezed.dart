@@ -18,7 +18,8 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$UserInfo {
   String get name => throw _privateConstructorUsedError;
   String get email => throw _privateConstructorUsedError;
-  List<dynamic> get posts => throw _privateConstructorUsedError;
+  List<Post> get posts => throw _privateConstructorUsedError;
+  List<String> get blocks => throw _privateConstructorUsedError;
   bool get is_show_attention_modal => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -34,7 +35,8 @@ abstract class $UserInfoCopyWith<$Res> {
   $Res call(
       {String name,
       String email,
-      List<dynamic> posts,
+      List<Post> posts,
+      List<String> blocks,
       bool is_show_attention_modal});
 }
 
@@ -54,6 +56,7 @@ class _$UserInfoCopyWithImpl<$Res, $Val extends UserInfo>
     Object? name = null,
     Object? email = null,
     Object? posts = null,
+    Object? blocks = null,
     Object? is_show_attention_modal = null,
   }) {
     return _then(_value.copyWith(
@@ -68,7 +71,11 @@ class _$UserInfoCopyWithImpl<$Res, $Val extends UserInfo>
       posts: null == posts
           ? _value.posts
           : posts // ignore: cast_nullable_to_non_nullable
-              as List<dynamic>,
+              as List<Post>,
+      blocks: null == blocks
+          ? _value.blocks
+          : blocks // ignore: cast_nullable_to_non_nullable
+              as List<String>,
       is_show_attention_modal: null == is_show_attention_modal
           ? _value.is_show_attention_modal
           : is_show_attention_modal // ignore: cast_nullable_to_non_nullable
@@ -88,7 +95,8 @@ abstract class _$$UserInfoImplCopyWith<$Res>
   $Res call(
       {String name,
       String email,
-      List<dynamic> posts,
+      List<Post> posts,
+      List<String> blocks,
       bool is_show_attention_modal});
 }
 
@@ -106,6 +114,7 @@ class __$$UserInfoImplCopyWithImpl<$Res>
     Object? name = null,
     Object? email = null,
     Object? posts = null,
+    Object? blocks = null,
     Object? is_show_attention_modal = null,
   }) {
     return _then(_$UserInfoImpl(
@@ -120,7 +129,11 @@ class __$$UserInfoImplCopyWithImpl<$Res>
       posts: null == posts
           ? _value._posts
           : posts // ignore: cast_nullable_to_non_nullable
-              as List<dynamic>,
+              as List<Post>,
+      blocks: null == blocks
+          ? _value._blocks
+          : blocks // ignore: cast_nullable_to_non_nullable
+              as List<String>,
       is_show_attention_modal: null == is_show_attention_modal
           ? _value.is_show_attention_modal
           : is_show_attention_modal // ignore: cast_nullable_to_non_nullable
@@ -135,9 +148,11 @@ class _$UserInfoImpl with DiagnosticableTreeMixin implements _UserInfo {
   const _$UserInfoImpl(
       {this.name = '',
       this.email = '',
-      final List<dynamic> posts = const [],
+      final List<Post> posts = const [],
+      final List<String> blocks = const [],
       this.is_show_attention_modal = true})
-      : _posts = posts;
+      : _posts = posts,
+        _blocks = blocks;
 
   @override
   @JsonKey()
@@ -145,13 +160,22 @@ class _$UserInfoImpl with DiagnosticableTreeMixin implements _UserInfo {
   @override
   @JsonKey()
   final String email;
-  final List<dynamic> _posts;
+  final List<Post> _posts;
   @override
   @JsonKey()
-  List<dynamic> get posts {
+  List<Post> get posts {
     if (_posts is EqualUnmodifiableListView) return _posts;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_posts);
+  }
+
+  final List<String> _blocks;
+  @override
+  @JsonKey()
+  List<String> get blocks {
+    if (_blocks is EqualUnmodifiableListView) return _blocks;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_blocks);
   }
 
   @override
@@ -160,7 +184,7 @@ class _$UserInfoImpl with DiagnosticableTreeMixin implements _UserInfo {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'UserInfo(name: $name, email: $email, posts: $posts, is_show_attention_modal: $is_show_attention_modal)';
+    return 'UserInfo(name: $name, email: $email, posts: $posts, blocks: $blocks, is_show_attention_modal: $is_show_attention_modal)';
   }
 
   @override
@@ -171,6 +195,7 @@ class _$UserInfoImpl with DiagnosticableTreeMixin implements _UserInfo {
       ..add(DiagnosticsProperty('name', name))
       ..add(DiagnosticsProperty('email', email))
       ..add(DiagnosticsProperty('posts', posts))
+      ..add(DiagnosticsProperty('blocks', blocks))
       ..add(DiagnosticsProperty(
           'is_show_attention_modal', is_show_attention_modal));
   }
@@ -183,14 +208,20 @@ class _$UserInfoImpl with DiagnosticableTreeMixin implements _UserInfo {
             (identical(other.name, name) || other.name == name) &&
             (identical(other.email, email) || other.email == email) &&
             const DeepCollectionEquality().equals(other._posts, _posts) &&
+            const DeepCollectionEquality().equals(other._blocks, _blocks) &&
             (identical(
                     other.is_show_attention_modal, is_show_attention_modal) ||
                 other.is_show_attention_modal == is_show_attention_modal));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, name, email,
-      const DeepCollectionEquality().hash(_posts), is_show_attention_modal);
+  int get hashCode => Object.hash(
+      runtimeType,
+      name,
+      email,
+      const DeepCollectionEquality().hash(_posts),
+      const DeepCollectionEquality().hash(_blocks),
+      is_show_attention_modal);
 
   @JsonKey(ignore: true)
   @override
@@ -203,7 +234,8 @@ abstract class _UserInfo implements UserInfo {
   const factory _UserInfo(
       {final String name,
       final String email,
-      final List<dynamic> posts,
+      final List<Post> posts,
+      final List<String> blocks,
       final bool is_show_attention_modal}) = _$UserInfoImpl;
 
   @override
@@ -211,7 +243,9 @@ abstract class _UserInfo implements UserInfo {
   @override
   String get email;
   @override
-  List<dynamic> get posts;
+  List<Post> get posts;
+  @override
+  List<String> get blocks;
   @override
   bool get is_show_attention_modal;
   @override

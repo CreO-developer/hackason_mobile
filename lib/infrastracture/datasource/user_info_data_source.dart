@@ -17,6 +17,7 @@ class UserInfoDataSource implements UserInfoRepository {
         'email': userInfo.email,
         'posts': userInfo.posts,
         'isShowAttentionModal': userInfo.is_show_attention_modal,
+        'blocks': userInfo.blocks,
       });
       return user_info;
     } catch (e) {
@@ -67,6 +68,19 @@ class UserInfoDataSource implements UserInfoRepository {
   Future<void> deleteUserInfo(String uid) async {
     try {
       final result = await db.collection('users').doc(uid).delete();
+      return result;
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
+
+  @override
+  Future<void> addBlock(String uid, String target_uid) async {
+    try {
+      final result = await db.collection('users').doc(uid).update({
+        'blocks': FieldValue.arrayUnion([target_uid]),
+      });
       return result;
     } catch (e) {
       print(e);

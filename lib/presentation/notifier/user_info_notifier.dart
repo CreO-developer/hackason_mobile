@@ -30,11 +30,14 @@ class UserInfoStateNotifier extends StateNotifier<UserInfo?> {
 
   Future<void> setUserInfo(String uid) async {
     final userInfo = await _userInfoService.getUserInfo(uid);
+    if (userInfo != null) {
     state = state?.copyWith(
-        name: userInfo!.name,
+        name: userInfo.name,
         email: userInfo.email,
         posts: userInfo.posts,
+        blocks: userInfo.blocks,
         is_show_attention_modal: userInfo.is_show_attention_modal);
+    }
   }
 
   Future<void> resetPost(String? uid, int? index) async {
@@ -56,8 +59,26 @@ class UserInfoStateNotifier extends StateNotifier<UserInfo?> {
         name: userInfo.name,
         email: userInfo.email,
         posts: userInfo.posts,
+        blocks: userInfo.blocks,
         is_show_attention_modal: userInfo.is_show_attention_modal);
       await _userInfoService.deleteUserInfo(uid);
+    }
+  }
+
+  Future<void> addBlock(String uid, String target_uid) async {
+    await _userInfoService.addBlock(uid, target_uid); // ブロックの追加処理を非同期で実行
+
+    // 現在の状態を取得
+    final currentState = state;
+    if (currentState != null) {
+      print(currentState.blocks); // 現在のブロックリストを出力
+
+      // 新しいブロックリストを作成し、uid を追加する
+      final updatedBlocks = List<String>.from(currentState.blocks);
+      updatedBlocks.add(uid);
+
+      // 状態を更新する
+      state = currentState.copyWith(blocks: updatedBlocks);
     }
   }
 }

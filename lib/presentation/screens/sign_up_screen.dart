@@ -98,10 +98,10 @@ class SignUpScreen extends ConsumerWidget {
                           content: Text('ユーザ登録に失敗しました。'),
                         ),
                       );
-                    } else {
-                      await userInfoNotifier.createUserInfo(result!.user!.uid);
-                      await userInfoNotifier.setUserInfo(result!.user!.uid);
+                      return;
                     }
+                    await userInfoNotifier.createUserInfo(result!.user!.uid);
+                    await userInfoNotifier.setUserInfo(result!.user!.uid);
                   },
                 ),
               ),

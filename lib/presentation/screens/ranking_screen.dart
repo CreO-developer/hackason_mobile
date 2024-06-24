@@ -1,13 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mobile/presentation/notifier/auth_user_notifier.dart';
 import 'package:mobile/presentation/notifier/ranking_notifier.dart';
+import 'package:mobile/presentation/notifier/user_info_notifier.dart';
 import 'package:mobile/widget/RankingWidget.dart';
 
-class RankingScreen extends ConsumerWidget {
-  const RankingScreen({Key? key}) : super(key: key);
+
+class RankingScreen extends ConsumerStatefulWidget {
+  const RankingScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  RankingScreenState createState() => RankingScreenState();
+}
+class RankingScreenState extends ConsumerState<RankingScreen> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // ここで依存関係にアクセスします
+    final userInfoState = ref.watch(userInfoNotifierProvider);
+    final rankingProvider = ref.read(rankingNotifierProvider.notifier);
+    rankingProvider.setRanking(userInfoState?.blocks ?? [], null);
+  }
+
+
+  @override
+  Widget build(BuildContext context) {
     final rankingProvider = ref.read(rankingNotifierProvider.notifier);
     final ranking = ref.watch(rankingNotifierProvider);
 
