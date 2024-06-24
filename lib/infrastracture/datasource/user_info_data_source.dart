@@ -62,4 +62,15 @@ class UserInfoDataSource implements UserInfoRepository {
       return null;
     }
   }
+
+  @override
+  Future<void> deleteUserInfo(String uid) async {
+    try {
+      final result = await db.collection('users').doc(uid).delete();
+      return result;
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
 }

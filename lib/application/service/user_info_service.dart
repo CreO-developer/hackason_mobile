@@ -42,4 +42,9 @@ class UserInfoService {
     final result = await _userInfoRepository.resetPost(uid, posts);
     return result;
   }
+
+  Future<void> deleteUserInfo(String uid) async {
+    final result = await _userInfoRepository.deleteUserInfo(uid);
+    return result;
+  }
 }

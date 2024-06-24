@@ -48,4 +48,16 @@ class UserInfoStateNotifier extends StateNotifier<UserInfo?> {
       await _userInfoService.resetPost(uid, updatedPosts);
     }
   }
+
+  Future<void> deleteUserInfo(String? uid) async {
+    if ( uid != null ) {
+      final userInfo = UserInfo();
+      state = state?.copyWith(
+        name: userInfo.name,
+        email: userInfo.email,
+        posts: userInfo.posts,
+        is_show_attention_modal: userInfo.is_show_attention_modal);
+      await _userInfoService.deleteUserInfo(uid);
+    }
+  }
 }
