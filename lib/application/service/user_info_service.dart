@@ -47,4 +47,9 @@ class UserInfoService {
     final result = await _userInfoRepository.deleteUserInfo(uid);
     return result;
   }
+
+  Future<void> addBlock(String uid, String target_uid) async {
+    final result = await _userInfoRepository.addBlock(uid, target_uid);
+    return result;
+  }
 }

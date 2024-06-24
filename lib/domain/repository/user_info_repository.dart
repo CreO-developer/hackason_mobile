@@ -7,4 +7,5 @@ abstract class UserInfoRepository {
   Future<void> createPost(String uid, Post post);
   Future<void> resetPost(String uid, List<Post> posts);
   Future<void> deleteUserInfo(String uid);
+  Future<void> addBlock(String uid, String target_uid);
 }
