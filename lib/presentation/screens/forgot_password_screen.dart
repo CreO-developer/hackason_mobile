@@ -37,7 +37,7 @@ class ForgotPasswordScreen extends ConsumerWidget {
                 style: TextStyle(color: Color(0xFF2D6486), fontSize: 24),
               ),
               SizedBox(height: 20),
-                            Text('送られてくるメールからパスワードの再設定をお願いします。'),
+              Text('送られてくるメールからパスワードの再設定をお願いします。'),
               SizedBox(height: 20),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -64,8 +64,8 @@ class ForgotPasswordScreen extends ConsumerWidget {
                 child: ElevatedButton(
                   child: Text('送信'),
                   onPressed: () async {
-                    final result = await authNotifier.resetPassword(
-                        emailController.text);
+                    final result =
+                        await authNotifier.resetPassword(emailController.text);
                     // if (result == null) {
                     //   print('パスワードの再設定に失敗しました');
                     // }

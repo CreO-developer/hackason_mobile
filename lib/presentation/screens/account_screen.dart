@@ -1,3 +1,4 @@
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile/presentation/notifier/auth_user_notifier.dart';
@@ -29,46 +30,123 @@ class AccountScreenState extends ConsumerState<AccountScreen> {
   @override
   Widget build(BuildContext context) {
     final authNotifier = ref.read(authNotifierProvider.notifier);
+    final authState = ref.watch(authNotifierProvider);
     final userInfoState = ref.watch(userInfoNotifierProvider);
-    print(userInfoState);
+
+    Future<String> _getImageUrl(String imgUrl) async {
+      FirebaseStorage storage = FirebaseStorage.instance;
+      Reference imageRef = storage.ref().child(imgUrl);
+      String imageUrl = await imageRef.getDownloadURL();
+      return imageUrl;
+    }
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('アカウント画面'),
+        title: const Text(
+          'プロフィール',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        backgroundColor: Color(0xFFFCF1D4),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.logout),
+            onPressed: () async {
+              await authNotifier.logoutUser();
+            },
+          ),
+        ],
       ),
       body: Column(
         children: [
-          Center(
-            child: const Text('こちらはアカウント画面です'),
-          ),
-          Center(
-            child: ElevatedButton(
-              child: Text('ログアウト'),
-              onPressed: () async {
-                final result = await authNotifier.logoutUser();
-              },
+          Container(
+            padding: EdgeInsets.all(40),
+            child: Row(
+              children: [
+                Icon(
+                  Icons.account_circle,
+                  size: 40,
+                ),
+                SizedBox(
+                  width: 15,
+                ),
+                Text(
+                  userInfoState!.name,
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                )
+              ],
             ),
           ),
+          // ここをコメントアウトすると、画像を表示します。
+          // Expanded(
+          //   child: GridView.builder(
+          //     padding: EdgeInsets.all(0),
+          //     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          //       crossAxisCount: 3, // 3列に設定
+          //       crossAxisSpacing: 1,
+          //       mainAxisSpacing: 1,
+          //       childAspectRatio: (480 / 640),
+          //     ),
+          //     itemCount: userInfoState?.posts.length ?? 0,
+          //     itemBuilder: (context, index) {
+          //       return FutureBuilder(
+          //         future: _getImageUrl(userInfoState?.posts[index].imgUrl ?? ''),
+          //         builder: (context, snapshot) {
+          //           if (snapshot.connectionState == ConnectionState.waiting) {
+          //             return Center(child: CircularProgressIndicator());
+          //           } else if (snapshot.hasError) {
+          //             return Center(child: Icon(Icons.error));
+          //           } else {
+          //             final imageUrl = snapshot.data as String;
+          //             return GestureDetector(
+          //               onTap: () async {
+          //                 Navigator.push(
+          //                   context,
+          //                   MaterialPageRoute(
+          //                     builder: (context) => PostScreen(
+          //                       post: userInfoState?.posts[index],
+          //                       uid: authState?.uid,
+          //                       index: index,
+          //                       imageUrl: imageUrl,
+          //                     ),
+          //                   ),
+          //                 );
+          //               },
+          //               child: Container(
+          //                 padding: EdgeInsets.all(0),
+          //                 child: Image.network(imageUrl),
+          //               ),
+          //             );
+          //           }
+          //         },
+          //       );
+          //     },
+          //   ),
+          // ),
           Expanded(
             child: GridView.builder(
+              padding: EdgeInsets.all(0),
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 3, // 3列に設定
-                crossAxisSpacing: 8.0, // 列間のスペース
-                mainAxisSpacing: 8.0, // 行間のスペース
+                crossAxisSpacing: 1, mainAxisSpacing: 1,
+                childAspectRatio: (480 / 640),
               ),
               itemCount: userInfoState?.posts.length ?? 0,
               itemBuilder: (context, index) {
                 return GestureDetector(
-                  onTap: () {
+                  onTap: () async {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => PostScreen(),
+                        builder: (context) => PostScreen(
+                          post: userInfoState?.posts[index],
+                          uid: authState?.uid,
+                          index: index,
+                        ),
                       ),
                     );
                   },
                   child: Container(
-                    margin: EdgeInsets.all(8.0),
+                    padding: EdgeInsets.all(0),
                     child: Image.network("https://via.placeholder.com/480x640"),
                   ),
                 );

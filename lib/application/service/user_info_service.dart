@@ -27,8 +27,6 @@ class UserInfoService {
   }
 
   Future<void> createPost(String uid, UserScoresState userStateScore) async {
-    print(uid);
-    print(userStateScore);
     final post = Post(
       name: userStateScore.theme,
       filter: userStateScore.filter,
@@ -37,6 +35,11 @@ class UserInfoService {
       uid: uid,
     );
     final result = await _userInfoRepository.createPost(uid, post);
+    return result;
+  }
+
+  Future<void> resetPost(String uid, List<Post> posts) async {
+    final result = await _userInfoRepository.resetPost(uid, posts);
     return result;
   }
 }

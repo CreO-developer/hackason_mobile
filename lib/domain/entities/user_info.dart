@@ -17,7 +17,9 @@ class UserInfo with _$UserInfo {
     return UserInfo(
       name: map?['name'] ?? '',
       email: map?['email'] ?? {},
-      posts: map?['posts'].map((a) {return Post.fromMap(a);}).toList(),
+      posts: map?['posts'].map((a) {
+        return Post.fromMap(a);
+      }).toList(),
       is_show_attention_modal: map?['isShowAttentionModal'] ?? true,
     );
   }

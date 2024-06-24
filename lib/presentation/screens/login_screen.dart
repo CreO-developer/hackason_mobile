@@ -74,6 +74,13 @@ class LoginPage extends ConsumerWidget {
                         emailController.text, passwordController.text);
                     if (result == null) {
                       print('ログインに失敗しました');
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('ログインに失敗しました'),
+                        ),
+                      );
+                    } else {
+                      userInfoNotifier.setUserInfo(result!.user!.uid);
                     }
                   },
                 ),
@@ -82,11 +89,23 @@ class LoginPage extends ConsumerWidget {
               RichText(
                 text: TextSpan(
                   children: [
-                    TextSpan(text: "アカウントの作成は", style: TextStyle(color: Color(0xFFC93429), fontSize: 12, fontWeight: FontWeight.bold)),
-                    TextSpan(text: "こちら", style: TextStyle(color: Color(0xFFC93429),decoration: TextDecoration.underline, fontSize: 12, fontWeight: FontWeight.bold),
-                    recognizer: TapGestureRecognizer()..onTap = () {
-                      context.push('/signup');
-                      },
+                    TextSpan(
+                        text: "アカウントの作成は",
+                        style: TextStyle(
+                            color: Color(0xFFC93429),
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold)),
+                    TextSpan(
+                      text: "こちら",
+                      style: TextStyle(
+                          color: Color(0xFFC93429),
+                          decoration: TextDecoration.underline,
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold),
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () {
+                          context.push('/signup');
+                        },
                     ),
                   ],
                 ),
@@ -95,11 +114,23 @@ class LoginPage extends ConsumerWidget {
               RichText(
                 text: TextSpan(
                   children: [
-                    TextSpan(text: "パスワードを忘れた場合は", style: TextStyle(color: Color(0xFFC93429), fontSize: 12, fontWeight: FontWeight.bold)),
-                    TextSpan(text: "こちら", style: TextStyle(color: Color(0xFFC93429),decoration: TextDecoration.underline, fontSize: 12, fontWeight: FontWeight.bold),
-                    recognizer: TapGestureRecognizer()..onTap = () {
-                      context.push('/forgotPassword');
-                      },
+                    TextSpan(
+                        text: "パスワードを忘れた場合は",
+                        style: TextStyle(
+                            color: Color(0xFFC93429),
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold)),
+                    TextSpan(
+                      text: "こちら",
+                      style: TextStyle(
+                          color: Color(0xFFC93429),
+                          decoration: TextDecoration.underline,
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold),
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () {
+                          context.push('/forgotPassword');
+                        },
                     ),
                   ],
                 ),
