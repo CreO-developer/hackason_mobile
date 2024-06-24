@@ -35,4 +35,8 @@ class AuthStateNotifier extends StateNotifier<User?> {
   Future<void> logoutUser() async {
     await _authService.logoutUser();
   }
+
+  Future<void> deleteUser() async {
+    await _authService.deleteUser();
+  }
 }

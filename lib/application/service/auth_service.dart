@@ -32,4 +32,8 @@ class AuthService {
   Future<UserCredential?> logoutUser() async {
     await _authRepository.logoutUser();
   }
+
+  Future<void> deleteUser() async {
+    await _authRepository.deleteUser();
+  }
 }

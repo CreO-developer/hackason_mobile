@@ -56,4 +56,14 @@ class AuthDataSource implements AuthRepository {
       return null;
     }
   }
+
+  @override
+  Future<void> deleteUser() async {
+    try {
+      await FirebaseAuth.instance.currentUser?.delete();
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
 }
