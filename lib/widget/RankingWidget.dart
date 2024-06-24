@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:mobile/domain/entities/post.dart';
 import 'package:mobile/presentation/notifier/auth_user_notifier.dart';
 import 'package:mobile/presentation/notifier/ranking_notifier.dart';
+import 'package:mobile/presentation/notifier/report_notifier.dart';
 import 'package:mobile/presentation/notifier/user_info_notifier.dart';
 import 'package:mobile/presentation/screens/post_screen.dart';
 import 'package:mobile/utils/get_image_url.dart';
@@ -18,16 +19,22 @@ class RankingWidget extends ConsumerStatefulWidget {
   RankingWidgetState createState() => RankingWidgetState();
 }
 class RankingWidgetState extends ConsumerState<RankingWidget> {
-  bool _isModalVisible = false;
+  bool _isBlockModalVisible = false;
+  bool _isReportModalVisible = false;
   String target_uid = '';
 
   @override
   void initState() {
     super.initState();
   }
-  void _toggleModal() {
+  void _toggleBlockModal() {
     setState(() {
-      _isModalVisible = !_isModalVisible;
+      _isBlockModalVisible = !_isBlockModalVisible;
+    });
+  }
+  void _toggleReportModal() {
+    setState(() {
+      _isReportModalVisible = !_isReportModalVisible;
     });
   }
 
@@ -37,6 +44,7 @@ class RankingWidgetState extends ConsumerState<RankingWidget> {
     final userInfoState = ref.watch(userInfoNotifierProvider);
     final rankingNotifier = ref.read(rankingNotifierProvider.notifier);
     final authState = ref.watch(authNotifierProvider);
+    final reportNotifier = ref.read(reportNotifierProvider.notifier);
     
     return Stack(
       children: [
@@ -188,39 +196,60 @@ class RankingWidgetState extends ConsumerState<RankingWidget> {
                         
                         Positioned(
                           top: 10,
-                          right: 10,
+                          right: 40,
                           child: IconButton(
-                            icon: const Icon(Icons.remove_circle),
+                            icon: const Icon(Icons.report),
                             onPressed: () {
-                              _toggleModal();
+                              _toggleReportModal();
                               setState(() {
                                 target_uid = widget.posts[index].uid;
                               });
                             },
-                            
+                          ),
+                        ),
+                        Positioned(
+                          top: 10,
+                          right: 10,
+                          child: IconButton(
+                            icon: const Icon(Icons.block),
+                            onPressed: () {
+                              _toggleBlockModal();
+                              setState(() {
+                                target_uid = widget.posts[index].uid;
+                              });
+                            },
                           ),
                         )
                       ],
                     ),
                   )
-                
                 ),
               );
             },
           ),
         ),
-        if (_isModalVisible)
+        if (_isBlockModalVisible)
           CustomModal(
             message: 'ブロックしますか？',
             buttonText: 'ブロック',
-            onClose: _toggleModal,
+            onClose: _toggleBlockModal,
             onButtonPressed: () async {
-              _toggleModal();
+              _toggleBlockModal();
               if (authState != null) {
                 await userInfoNotifier.addBlock(authState!.uid, target_uid);
                 await rankingNotifier.setRanking(userInfoState!.blocks, target_uid);
               }
               // context.push('/account');
+            },
+          ),
+        if (_isReportModalVisible)
+          CustomModal(
+            message: '通報しますか？',
+            buttonText: '通報',
+            onClose: _toggleReportModal,
+            onButtonPressed: () async {
+              _toggleReportModal();
+              await reportNotifier.addReport(target_uid);
             },
           ),
         ]
