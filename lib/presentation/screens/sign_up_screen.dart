@@ -6,6 +6,8 @@ import 'package:mobile/presentation/notifier/auth_user_notifier.dart';
 import 'package:mobile/presentation/notifier/user_info_notifier.dart';
 
 class SignUpScreen extends ConsumerWidget {
+  const SignUpScreen({super.key});
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final authNotifier = ref.read(authNotifierProvider.notifier);
@@ -16,22 +18,22 @@ class SignUpScreen extends ConsumerWidget {
     return Scaffold(
       body: Center(
         child: SingleChildScrollView(
-          padding: EdgeInsets.all(50),
+          padding: const EdgeInsets.all(50),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              SizedBox(height: 20),
-              Text(
+              const SizedBox(height: 20),
+              const Text(
                 '新規登録',
                 style: TextStyle(color: Color(0xFF2D6486), fontSize: 24),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(height: 20),
-                  Text(
+                  const SizedBox(height: 20),
+                  const Text(
                     'ニックネーム',
                     style: TextStyle(
                         color: Color(0xFF54BD6B),
@@ -48,8 +50,8 @@ class SignUpScreen extends ConsumerWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(height: 20),
-                  Text(
+                  const SizedBox(height: 20),
+                  const Text(
                     'メールアドレス',
                     style: TextStyle(
                         color: Color(0xFF54BD6B),
@@ -67,8 +69,8 @@ class SignUpScreen extends ConsumerWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(height: 20),
-                  Text(
+                  const SizedBox(height: 20),
+                  const Text(
                     'パスワード',
                     style: TextStyle(
                         color: Color(0xFF54BD6B),
@@ -81,11 +83,11 @@ class SignUpScreen extends ConsumerWidget {
                   ),
                 ],
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Container(
                 width: double.infinity,
                 child: ElevatedButton(
-                  child: Text('ユーザ登録'),
+                  child: const Text('ユーザ登録'),
                   onPressed: () async {
                     final result = await authNotifier.registerUser(
                         emailController.text, passwordController.text);
@@ -103,11 +105,11 @@ class SignUpScreen extends ConsumerWidget {
                   },
                 ),
               ),
-              SizedBox(height: 40),
+              const SizedBox(height: 40),
               RichText(
                 text: TextSpan(
                   children: [
-                    TextSpan(
+                    const TextSpan(
                         text: "既にアカウントをお持ちの方は",
                         style: TextStyle(
                             color: Color(0xFFC93429),
@@ -115,7 +117,7 @@ class SignUpScreen extends ConsumerWidget {
                             fontWeight: FontWeight.bold)),
                     TextSpan(
                       text: "こちら",
-                      style: TextStyle(
+                      style: const TextStyle(
                           color: Color(0xFFC93429),
                           decoration: TextDecoration.underline,
                           fontSize: 12,
