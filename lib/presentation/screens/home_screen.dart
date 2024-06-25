@@ -1,13 +1,10 @@
-import 'package:camera/camera.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:mobile/main.dart';
 import 'package:mobile/presentation/notifier/user_scores_notifer.dart';
 
 import 'package:mobile/widget/ButtonWidget.dart';
-import 'package:mobile/widget/CameraPreviewWidget.dart';
 import 'package:mobile/widget/TitleWidget.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
@@ -24,12 +21,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Column(
-          children: [
-            if (showButton) _buildInitialView(),
-            if (!showButton) _buildGameOptions(),
-          ],
+      body: SingleChildScrollView(
+        child: Center(
+          child: Column(
+            children: [
+              if (showButton) _buildInitialView(),
+              if (!showButton) _buildGameOptions(),
+            ],
+          ),
         ),
       ),
     );

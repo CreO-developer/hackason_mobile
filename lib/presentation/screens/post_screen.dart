@@ -95,7 +95,12 @@ class _PostScreenState extends ConsumerState<PostScreen> {
                           widget.post!.name,
                           style: TextStyle(
                               fontSize: 16, fontWeight: FontWeight.bold),
-                        )
+                        ),
+                        Text(
+                          '(${widget.post!.uid.substring(0, 7)}...)', // Display the first 7 characters of the uid with brackets
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.bold),
+                        ),
                       ],
                     ),
                     if (widget.post?.filter.split('-')[0] == 'kumitaiso' ||
