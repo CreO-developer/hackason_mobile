@@ -61,9 +61,16 @@ class _PostScreenState extends ConsumerState<PostScreen> {
                       children: [
                         Center(
                           child: Image.network(
-                            widget.imageUrl ??
-                                'https://via.placeholder.com/480x640',
+                            widget.imageUrl!,
                             fit: BoxFit.cover,
+                            errorBuilder: (BuildContext context,
+                                Object exception, StackTrace? stackTrace) {
+                              // ローカルアセットの画像をフォールバックとして使用
+                              return Image.asset(
+                                'assets/icon/NG.png', // ローカルのプレースホルダー画像へのパス
+                                fit: BoxFit.cover,
+                              );
+                            },
                           ),
                         ),
                         if (widget.uid != null)

@@ -109,7 +109,7 @@ class RankingWidgetState extends ConsumerState<RankingWidget> {
                                           StackTrace? stackTrace) {
                                         // ローカルアセットの画像をフォールバックとして使用
                                         return Image.asset(
-                                          'assets/images/NG.png', // ローカルのプレースホルダー画像へのパス
+                                          'assets/icon/NG.png', // ローカルのプレースホルダー画像へのパス
                                           fit: BoxFit.cover,
                                         );
                                       },
