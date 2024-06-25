@@ -136,37 +136,6 @@ class AccountScreenState extends ConsumerState<AccountScreen> {
                 },
               ),
             ),
-            // Expanded(
-            //   child: GridView.builder(
-            //     padding: EdgeInsets.all(0),
-            //     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            //       crossAxisCount: 3, // 3列に設定
-            //       crossAxisSpacing: 1, mainAxisSpacing: 1,
-            //       childAspectRatio: (480 / 640),
-            //     ),
-            //     itemCount: userInfoState?.posts.length ?? 0,
-            //     itemBuilder: (context, index) {
-            //       return GestureDetector(
-            //         onTap: () async {
-            //           Navigator.push(
-            //             context,
-            //             MaterialPageRoute(
-            //               builder: (context) => PostScreen(
-            //                 post: userInfoState?.posts[index],
-            //                 uid: authState?.uid,
-            //                 index: index,
-            //               ),
-            //             ),
-            //           );
-            //         },
-            //         child: Container(
-            //           padding: EdgeInsets.all(0),
-            //           child: Image.network("https://via.placeholder.com/480x640"),
-            //         ),
-            //       );
-            //     },
-            //   ),
-            // ),
           ],
         ),
         if (_isModalVisible)

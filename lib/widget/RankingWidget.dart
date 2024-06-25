@@ -102,9 +102,17 @@ class RankingWidgetState extends ConsumerState<RankingWidget> {
                                     borderRadius:
                                         BorderRadius.circular(10.0), // 角を丸くする
                                     child: Image.network(
-                                      imageUrl ??
-                                          'https://via.placeholder.com/480x640', // ここにiPhoneで撮った写真のURLを指定します
+                                      imageUrl, // ここにiPhoneで撮った写真のURLを指定します
                                       fit: BoxFit.cover,
+                                      errorBuilder: (BuildContext context,
+                                          Object exception,
+                                          StackTrace? stackTrace) {
+                                        // ローカルアセットの画像をフォールバックとして使用
+                                        return Image.asset(
+                                          'assets/images/NG.png', // ローカルのプレースホルダー画像へのパス
+                                          fit: BoxFit.cover,
+                                        );
+                                      },
                                     ),
                                   ),
                                   if (index == 0)

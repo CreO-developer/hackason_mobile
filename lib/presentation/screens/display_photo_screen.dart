@@ -23,7 +23,6 @@ class DisplayPhotoScreen extends StatelessWidget {
     return;
   }
 
-
   // 読み取りたい場合は下記コメントアウトを外す
   // Future<Image> download() async { // 非同期処理で取得する
   //   final Reference ref = FirebaseStorage.instance.ref().child('UL/upload-pic.jpeg');
@@ -36,8 +35,8 @@ class DisplayPhotoScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('撮れた写真')),
-      body: Column(
-        children: [Expanded(
+      body: Column(children: [
+        Expanded(
           child: GridView.builder(
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2, // 2列で表示
@@ -60,15 +59,14 @@ class DisplayPhotoScreen extends StatelessWidget {
           ),
         ),
         Container(
-                  child: FloatingActionButton(
-                    onPressed: () async {
-                      await upload(imagePath); // ここで画像のアップロード処理を行う関数を呼び出す
-                    },
-                    child: const Icon(Icons.upload),
-                  ),
-                ),
-        ]
-      ),
+          child: FloatingActionButton(
+            onPressed: () async {
+              await upload(imagePath); // ここで画像のアップロード処理を行う関数を呼び出す
+            },
+            child: const Icon(Icons.upload),
+          ),
+        ),
+      ]),
     );
   }
 }
