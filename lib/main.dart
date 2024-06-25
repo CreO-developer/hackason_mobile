@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile/router/router.dart';
+import 'package:mobile/widget/TermsOfServiceDialog.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'firebase_options.dart';
 
 final cameraProvider = StateProvider<CameraDescription?>((ref) => null);
@@ -14,16 +16,45 @@ Future<void> main() async {
   );
   // 利用可能なカメラのリストを取得
   final List<CameraDescription> cameras = await availableCameras();
-
-  runApp(
-    ProviderScope(
-      overrides: [
-        cameraProvider.overrideWithValue(
-            StateController(cameras.isNotEmpty ? cameras.first : null)),
-      ],
-      child: const MyApp(),
-    ),
-  );
+  final prefs = await SharedPreferences.getInstance();
+  final bool termsAccepted = prefs.getBool('terms_accepted') ?? false;
+  if (!termsAccepted) {
+    runApp(
+      ProviderScope(
+        overrides: [
+          cameraProvider.overrideWithValue(
+              StateController(cameras.isNotEmpty ? cameras.first : null)),
+        ],
+        child: MaterialApp(
+          home: Builder(
+            builder: (context) {
+              // 初回起動時にダイアログを表示
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                showDialog(
+                  context: context,
+                  barrierDismissible: false, // ユーザーがダイアログ外をタップしても閉じないようにする
+                  builder: (BuildContext context) {
+                    return TermsOfServiceDialog();
+                  },
+                );
+              });
+              return const MyApp();
+            },
+          ),
+        ),
+      ),
+    );
+  } else {
+    runApp(
+      ProviderScope(
+        overrides: [
+          cameraProvider.overrideWithValue(
+              StateController(cameras.isNotEmpty ? cameras.first : null)),
+        ],
+        child: const MyApp(),
+      ),
+    );
+  }
 }
 
 class MyApp extends ConsumerWidget {

@@ -142,9 +142,9 @@ GoRouter CustomRouter(WidgetRef ref) {
         ),
       ],
       redirect: (context, state) async {
-        print('redirecting...');
-
-        if (auth == null && state.fullPath != '/signup' && state.fullPath != '/forgotPassword') {
+        if (auth == null &&
+            state.fullPath != '/signup' &&
+            state.fullPath != '/forgotPassword') {
           return '/login';
         }
         return null;

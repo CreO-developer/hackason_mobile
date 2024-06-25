@@ -4,6 +4,8 @@ import 'dart:ffi';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mobile/widget/LoadingTextModal.dart';
+import 'package:mobile/widget/TextModal.dart';
 
 class CameraPreviewWidget extends StatefulWidget {
   final CameraDescription camera;
@@ -68,18 +70,29 @@ class _CameraPreviewWidgetState extends State<CameraPreviewWidget> {
   }
 
   void _showThemeModal() {
+    var dialogContext;
     showDialog(
       context: context,
-      builder: (context) {
-        return Dialog(
-          child: Container(
-            padding: EdgeInsets.all(20),
-            child: Text(
-              widget.theme,
-              style: TextStyle(fontSize: 24),
-            ),
-          ),
-        );
+      builder: (BuildContext context) {
+        dialogContext = context;
+        return TextCustomModal(message: widget.theme);
+      },
+    );
+
+    // Close the dialog after 5 seconds
+    Future.delayed(Duration(seconds: 5), () {
+      Navigator.of(dialogContext)
+          .pop(); // This will close the modal after 5 seconds
+    });
+  }
+
+  void _showUploadingModal() {
+    showDialog(
+      context: context,
+      barrierDismissible:
+          false, // User cannot dismiss the dialog by tapping outside of it
+      builder: (BuildContext context) {
+        return TextCustomModal(message: "Uploading...");
       },
     );
   }
@@ -87,27 +100,50 @@ class _CameraPreviewWidgetState extends State<CameraPreviewWidget> {
   Future<void> _capturePicture() async {
     if (_isButtonDisabled) return; // Check if the button is disabled
     _isButtonDisabled = true; // Disable the button
+    var uploadingDialogContext; // To hold the context of the uploading dialog
+
     try {
       await _initializeControllerFuture;
+
+      // Show uploading modal before the upload begins
+      showDialog(
+        context: context,
+        barrierDismissible:
+            false, // User cannot dismiss the dialog by tapping outside of it
+        builder: (BuildContext context) {
+          uploadingDialogContext = context; // Store the context of the dialog
+          return LoadingTextCustomModal(message: "採点しています...");
+        },
+      );
+
       final image = await _controller.takePicture();
-      await widget.upload(image.path);
-      await _controller.dispose();
-      await _controller.dispose();
+      await widget.upload(image.path); // Upload the image
+
+      // Use the stored dialog context to dismiss the uploading modal
+      Navigator.of(uploadingDialogContext).pop();
+    } catch (e) {
+      print(e);
+      // If an error occurs, ensure we also dismiss the modal
+      if (uploadingDialogContext != null) {
+        Navigator.of(uploadingDialogContext).maybePop();
+      }
+    } finally {
+      _isButtonDisabled = false; // Re-enable the button after processing
+
+      // Ensure the modal is closed in case of an error
+      if (uploadingDialogContext != null) {
+        Navigator.of(uploadingDialogContext).maybePop();
+      }
+
       await _controller.dispose();
       _timer.cancel();
 
+      // Navigate based on the question count
       if (widget.questionCount == 4) {
-        print('Go to result');
         GoRouter.of(context).go('/home/result');
-        return;
       } else {
         GoRouter.of(context).go('/home/question${widget.questionCount + 1}');
-        return;
       }
-    } catch (e) {
-      print(e);
-    } finally {
-      _isButtonDisabled = false; // Re-enable the button after processing
     }
   }
 

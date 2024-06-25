@@ -7,7 +7,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>Mobile</string>
+	<string>かシャッタ</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -27,9 +27,9 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-	<string>カメラを使用する理由をここに記述します</string>
+	<string>写真を撮影し、投稿、プロフィールとして使用するためにカメラへのアクセスが必要です。</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>マイクを使用する理由をここに記述します</string>
+	<string>音声メモを録音し、後で再生するためにマイクへのアクセスが必要です。</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
