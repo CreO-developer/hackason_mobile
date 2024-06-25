@@ -16,11 +16,9 @@ final imgUrlProvider = StateProvider<String>((ref) => "");
 class ResultScreen extends ConsumerWidget {
   const ResultScreen({Key? key}) : super(key: key);
 
-  Future<String> _fetchImageUrl(imagePath) async {
-    // Replace 'path/to/your/image.jpg' with the actual path to your image in Firebase Storage
+  Future<String> _fetchImageUrl(String imagePath) async {
     Reference ref = FirebaseStorage.instance.ref().child(imagePath);
     String imageUrl = await ref.getDownloadURL();
-
     return imageUrl;
   }
 
@@ -28,129 +26,134 @@ class ResultScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final scoresNotifier = ref.watch(userScoresNotiferProvider);
     final pageController = PageController();
-
     final imageState = ref.watch(imageStateProvider);
     final imageUrl = ref.watch(imageUrlProvider);
     final imgUrl = ref.watch(imgUrlProvider);
-    print(scoresNotifier);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('リザルト'),
         centerTitle: true,
         backgroundColor: const Color(0xFFFCF1D4),
       ),
-      body: Column(children: [
-        SizedBox(
-          height: 450, // ここでPageViewの高さを指定
-          child: Stack(
-            children: [
-              PageView.builder(
-                controller: pageController,
-                itemCount: scoresNotifier.length,
-                itemBuilder: (_, index) {
-                  final score = scoresNotifier[index];
-                  return index == 0 || index == 1
-                      ? SizedBox(
-                          width: 330,
-                          child: ResultQ1Q2CardWidget(
-                            userScoreState: score,
-                          ),
-                        )
-                      : SizedBox(
-                          width: 330,
-                          child: ResultQ3Q4CardWidget(
-                            userScoreState: score,
-                          ),
-                        );
-                },
-              ),
-              if (imageState)
-                Container(
-                  color: Colors.black.withOpacity(
-                      0.5), // Optional: Add a semi-transparent overlay
-                  child: Column(
-                    children: [
-                      Stack(
+      body: SingleChildScrollView(
+        // Wrap your Column with SingleChildScrollView
+        child: Column(
+          children: [
+            SizedBox(
+              height: 450, // ここでPageViewの高さを指定
+              child: Stack(
+                children: [
+                  PageView.builder(
+                    controller: pageController,
+                    itemCount: scoresNotifier.length,
+                    itemBuilder: (_, index) {
+                      final score = scoresNotifier[index];
+                      return index == 0 || index == 1
+                          ? SizedBox(
+                              width: 330,
+                              child: ResultQ1Q2CardWidget(
+                                userScoreState: score,
+                              ),
+                            )
+                          : SizedBox(
+                              width: 330,
+                              child: ResultQ3Q4CardWidget(
+                                userScoreState: score,
+                              ),
+                            );
+                    },
+                  ),
+                  if (imageState)
+                    Container(
+                      color: Colors.black.withOpacity(0.5),
+                      child: Column(
                         children: [
-                          Image.network(
-                            imageUrl,
-                            fit: BoxFit.cover,
-                            width: double.infinity,
-                            height: 450,
-                          ),
-                          Positioned(
-                            top: 0,
-                            right: 16,
-                            child: IconButton(
-                              icon: Icon(Icons.close,
-                                  color: Colors.black, size: 30),
-                              onPressed: () {
-                                ref.read(imageStateProvider.notifier).state =
-                                    false;
-                              },
-                            ),
+                          Stack(
+                            children: [
+                              Image.network(
+                                imageUrl,
+                                fit: BoxFit.cover,
+                                width: double.infinity,
+                                height: 450,
+                              ),
+                              Positioned(
+                                top: 0,
+                                right: 16,
+                                child: IconButton(
+                                  icon: Icon(Icons.close,
+                                      color: Colors.black, size: 30),
+                                  onPressed: () {
+                                    ref
+                                        .read(imageStateProvider.notifier)
+                                        .state = false;
+                                  },
+                                ),
+                              ),
+                            ],
                           ),
                         ],
                       ),
-                    ],
-                  ),
-                ),
-            ],
-          ),
-        ),
-        if (!imageState)
-          (AnimatedBuilder(
-            animation: pageController,
-            builder: (_, __) {
-              return Container(
-                margin: const EdgeInsets.symmetric(vertical: 16),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: List<Widget>.generate(
-                    scoresNotifier.length,
-                    (index) => buildIndicator(index ==
-                        (pageController.page ?? pageController.initialPage)
-                            .round()),
-                  ),
-                ),
-              );
-            },
-          )),
-        if (imageState) const SizedBox(height: 35),
-        const SizedBox(height: 30),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: imageState
-              ? [
-                  ButtonWidget(
-                    buttonText: "広場に投稿する",
-                    buttonColor: Color(0xFFFD9595),
-                    onPress: () async {
-                      // モーダルを表示したい
-                      _showConfirmationDialog(context, ref);
-                    },
-                  ),
-                  SizedBox(width: 20), // Add
-                  Icon(Icons.refresh, size: 50, color: Color(0xFF5F6368)),
-                ]
-              : [
-                  ButtonWidget(
-                    buttonText: "撮影した画像を見る",
-                    buttonColor: Color(0xFF54BD6B),
-                    onPress: () async {
-                      final imageUrl = await _fetchImageUrl(
-                          scoresNotifier[pageController.page!.round()].imgUrl);
-                      ref.read(imageUrlProvider.notifier).state = imageUrl;
-                      ref.read(imageStateProvider.notifier).state = true;
-                      ref.read(imgUrlProvider.notifier).state =
-                          scoresNotifier[pageController.page!.round()].imgUrl;
-                    },
-                  ),
-                  SizedBox(width: 20), // Add
-                  Icon(Icons.refresh, size: 50, color: Color(0xFF5F6368)),
+                    ),
                 ],
+              ),
+            ),
+            if (!imageState)
+              AnimatedBuilder(
+                animation: pageController,
+                builder: (_, __) {
+                  return Container(
+                    margin: const EdgeInsets.symmetric(vertical: 16),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: List<Widget>.generate(
+                        scoresNotifier.length,
+                        (index) => buildIndicator(index ==
+                            (pageController.page ?? pageController.initialPage)
+                                .round()),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            if (imageState) const SizedBox(height: 35),
+            const SizedBox(height: 30),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: imageState
+                  ? [
+                      ButtonWidget(
+                        buttonText: "広場に投稿する",
+                        buttonColor: Color(0xFFFD9595),
+                        onPress: () async {
+                          _showConfirmationDialog(context, ref);
+                        },
+                      ),
+                      SizedBox(width: 20),
+                      Icon(Icons.refresh, size: 50, color: Color(0xFF5F6368)),
+                    ]
+                  : [
+                      ButtonWidget(
+                        buttonText: "撮影した画像を見る",
+                        buttonColor: Color(0xFF54BD6B),
+                        onPress: () async {
+                          final imageUrl = await _fetchImageUrl(
+                              scoresNotifier[pageController.page!.round()]
+                                  .imgUrl);
+                          ref.read(imageUrlProvider.notifier).state = imageUrl;
+                          ref.read(imageStateProvider.notifier).state = true;
+                          ref.read(imgUrlProvider.notifier).state =
+                              scoresNotifier[pageController.page!.round()]
+                                  .imgUrl;
+                        },
+                      ),
+                      SizedBox(width: 20),
+                      Icon(Icons.refresh, size: 50, color: Color(0xFF5F6368)),
+                    ],
+            ),
+          ],
         ),
-      ]),
+      ),
     );
   }
 
@@ -172,14 +175,13 @@ class ResultScreen extends ConsumerWidget {
       builder: (BuildContext context) {
         return Dialog(
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(0), // Set square corners
+            borderRadius: BorderRadius.circular(0),
           ),
           child: LayoutBuilder(
             builder: (BuildContext context, BoxConstraints constraints) {
               return Container(
-                width: constraints
-                    .maxWidth, // Set the width of the dialog to be full screen
-                color: Color(0xFF54BD6B), // Set the background color to green
+                width: constraints.maxWidth,
+                color: Color(0xFF54BD6B),
                 padding: const EdgeInsets.all(16),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
@@ -214,11 +216,9 @@ class ResultScreen extends ConsumerWidget {
                     Center(
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor:
-                              Color(0xFFFD9595), // Background color
+                          backgroundColor: Color(0xFFFD9595),
                           shape: RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius.circular(30), // Rounded corners
+                            borderRadius: BorderRadius.circular(30),
                           ),
                         ),
                         child: const Text(

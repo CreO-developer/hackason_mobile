@@ -64,7 +64,7 @@ class MyApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final router = CustomRouter(ref);
     return MaterialApp.router(
-      title: 'アプリ',
+      title: 'かシャッタ',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
