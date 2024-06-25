@@ -16,6 +16,7 @@ class SignUpScreen extends ConsumerWidget {
     final passwordController = TextEditingController();
 
     return Scaffold(
+      resizeToAvoidBottomInset: true, // これを確認または追加
       body: Center(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(50),
