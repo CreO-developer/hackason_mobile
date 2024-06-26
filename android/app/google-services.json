@@ -7,6 +7,25 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:392508577485:android:341a28114861bfefb5fb84",
+        "android_client_info": {
+          "package_name": "com.creo.kasyatter"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA4Zar0M-F4ra1CIQ0RBNjpqAzCsQUDv54"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:392508577485:android:c06e17927573c33eb5fb84",
         "android_client_info": {
           "package_name": "com.your.orgname.my_app_name"

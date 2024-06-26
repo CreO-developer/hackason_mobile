@@ -1,4 +1,4 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.your.orgname.my_app_name">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.creo.kasyatter">
     <application
         android:label="かシャッタ"
         android:name="${applicationName}"
