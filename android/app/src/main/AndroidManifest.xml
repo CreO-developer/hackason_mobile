@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.your.orgname.my_app_name">
     <application
-        android:label="mobile"
+        android:label="かシャッタ"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
