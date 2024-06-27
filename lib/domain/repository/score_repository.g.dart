@@ -13,7 +13,7 @@ class _ScoreRepository implements ScoreRepository {
     this._dio, {
     this.baseUrl,
   }) {
-    baseUrl ??= 'http://192.168.0.225:8000';
+    baseUrl ??= 'http://52.195.176.75:8000';
   }
 
   final Dio _dio;
