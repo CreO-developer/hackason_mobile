@@ -8,6 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile/constants/single.dart';
 import 'package:mobile/main.dart';
+import 'package:mobile/presentation/notifier/number_of_notifier.dart';
 import 'package:mobile/presentation/notifier/user_scores_notifer.dart';
 import 'package:mobile/presentation/screens/question/question_screen2.dart';
 import 'package:mobile/widget/CameraPreviewWidget.dart';
@@ -27,30 +28,57 @@ class _QuestionScreen1State extends ConsumerState<QuestionScreen1> {
   Widget build(BuildContext context) {
     final CameraDescription? camera = ref.watch(cameraProvider);
     final scoresNotifier = ref.read(userScoresNotiferProvider.notifier);
+    final selectedValue = ref.watch(selectedValueProvider);
     String filter;
     String theme;
     Map<String, String> questionAndFilter = {};
-    switch (scoresNotifier.state.length) {
-      case 0:
-        questionAndFilter = QuestionConstants.getRandomQuestion1();
-        theme = questionAndFilter['theme']!;
-        filter = questionAndFilter['filter']!;
-        break;
-      case 1:
-        questionAndFilter = QuestionConstants.getRandomQuestion2();
-        theme = questionAndFilter['theme']!;
-        filter = questionAndFilter['filter']!;
-        break;
-      case 2:
-        questionAndFilter = QuestionConstants.getRandomQuestion3();
-        theme = questionAndFilter['theme']!;
-        filter = questionAndFilter['filter']!;
-        break;
-      default:
-        questionAndFilter = QuestionConstants.getRandomQuestion4();
-        theme = questionAndFilter['theme']!;
-        filter = questionAndFilter['filter']!;
-        break;
+    if (selectedValue == "1人")
+      switch (scoresNotifier.state.length) {
+        case 0:
+          questionAndFilter = QuestionConstants.getRandomQuestion1(1, 5);
+          theme = questionAndFilter['theme']!;
+          filter = questionAndFilter['filter']!;
+          break;
+        case 1:
+          questionAndFilter = QuestionConstants.getRandomQuestion2(1, 5);
+          theme = questionAndFilter['theme']!;
+          filter = questionAndFilter['filter']!;
+          break;
+        case 2:
+          questionAndFilter = QuestionConstants.getRandomQuestion3(1, 5);
+          theme = questionAndFilter['theme']!;
+          filter = questionAndFilter['filter']!;
+          break;
+        default:
+          questionAndFilter = QuestionConstants.getRandomQuestion4(1, 5);
+          theme = questionAndFilter['theme']!;
+          filter = questionAndFilter['filter']!;
+          break;
+      }
+    else {
+      print("2人");
+      switch (scoresNotifier.state.length) {
+        case 0:
+          questionAndFilter = QuestionConstants.getRandomQuestion1(6, 10);
+          theme = questionAndFilter['theme']!;
+          filter = questionAndFilter['filter']!;
+          break;
+        case 1:
+          questionAndFilter = QuestionConstants.getRandomQuestion2(6, 10);
+          theme = questionAndFilter['theme']!;
+          filter = questionAndFilter['filter']!;
+          break;
+        case 2:
+          questionAndFilter = QuestionConstants.getRandomQuestion3(6, 10);
+          theme = questionAndFilter['theme']!;
+          filter = questionAndFilter['filter']!;
+          break;
+        default:
+          questionAndFilter = QuestionConstants.getRandomQuestion4(6, 10);
+          theme = questionAndFilter['theme']!;
+          filter = questionAndFilter['filter']!;
+          break;
+      }
     }
 
     Future<void> upload(String imagePath) async {

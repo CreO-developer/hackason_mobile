@@ -19,6 +19,7 @@ class ResultScreen extends ConsumerStatefulWidget {
   @override
   ResultScreenState createState() => ResultScreenState();
 }
+
 class ResultScreenState extends ConsumerState<ResultScreen> {
   // const ResultScreen({Key? key}) : super(key: key);
 
@@ -41,7 +42,7 @@ class ResultScreenState extends ConsumerState<ResultScreen> {
     final imageState = ref.watch(imageStateProvider);
     final imageUrl = ref.watch(imageUrlProvider);
     final imgUrl = ref.watch(imgUrlProvider);
-
+    print(userScoresNotifer);
     return Scaffold(
       appBar: AppBar(
         title: const Text('リザルト'),
@@ -67,7 +68,8 @@ class ResultScreenState extends ConsumerState<ResultScreen> {
                       if (index == 0) {
                         return SizedBox(
                           width: 330,
-                          child: ResultTotalCardWidget(userScoreStates: userScoresNotifer),
+                          child: ResultTotalCardWidget(
+                              userScoreStates: userScoresNotifer),
                         );
                       } else if (index - 1 < userScoresNotifer.length) {
                         final score = userScoresNotifer[index - 1];
@@ -111,7 +113,9 @@ class ResultScreenState extends ConsumerState<ResultScreen> {
                                   icon: const Icon(Icons.close,
                                       color: Colors.black, size: 30),
                                   onPressed: () {
-                                    ref.read(imageStateProvider.notifier).state = false;
+                                    ref
+                                        .read(imageStateProvider.notifier)
+                                        .state = false;
                                   },
                                 ),
                               ),
@@ -134,7 +138,10 @@ class ResultScreenState extends ConsumerState<ResultScreen> {
                       children: List<Widget>.generate(
                         userScoresNotifer.length + 1,
                         (index) => buildIndicator(
-                          index == (pageController.page ?? pageController.initialPage).round(),
+                          index ==
+                              (pageController.page ??
+                                      pageController.initialPage)
+                                  .round(),
                         ),
                       ),
                     ),
@@ -146,7 +153,9 @@ class ResultScreenState extends ConsumerState<ResultScreen> {
             SizedBox(
               width: 330,
               child: Row(
-                mainAxisAlignment: _currentPage != 0 ? MainAxisAlignment.spaceBetween : MainAxisAlignment.end,
+                mainAxisAlignment: _currentPage != 0
+                    ? MainAxisAlignment.spaceBetween
+                    : MainAxisAlignment.end,
                 children: imageState
                     ? [
                         ButtonWidget(
@@ -157,28 +166,38 @@ class ResultScreenState extends ConsumerState<ResultScreen> {
                           },
                         ),
                         const SizedBox(width: 20),
-                        const Icon(Icons.refresh, size: 50, color: Color(0xFF5F6368)),
+                        const Icon(Icons.refresh,
+                            size: 50, color: Color(0xFF5F6368)),
                       ]
                     : [
-                      if (_currentPage != 0)
-                        ButtonWidget(
-                          buttonText: "撮影した画像を見る",
-                          buttonColor: const Color(0xFF54BD6B),
-                          onPress: () async {
-                            if (pageController.page != null &&
-                                pageController.page!.round() < userScoresNotifer.length + 1 && pageController.page!.round() > 0) {
-                              final imageUrl = await _fetchImageUrl(
-                                userScoresNotifer[pageController.page!.round() -1].imgUrl,
-                              );
-                              ref.read(imageUrlProvider.notifier).state = imageUrl;
-                              ref.read(imageStateProvider.notifier).state = true;
-                              ref.read(imgUrlProvider.notifier).state =
-                                  userScoresNotifer[pageController.page!.round()-1].imgUrl;
-                            }
-                          },
-                        ),
+                        if (_currentPage != 0)
+                          ButtonWidget(
+                            buttonText: "撮影した画像を見る",
+                            buttonColor: const Color(0xFF54BD6B),
+                            onPress: () async {
+                              if (pageController.page != null &&
+                                  pageController.page!.round() <
+                                      userScoresNotifer.length + 1 &&
+                                  pageController.page!.round() > 0) {
+                                final imageUrl = await _fetchImageUrl(
+                                  userScoresNotifer[
+                                          pageController.page!.round() - 1]
+                                      .imgUrl,
+                                );
+                                ref.read(imageUrlProvider.notifier).state =
+                                    imageUrl;
+                                ref.read(imageStateProvider.notifier).state =
+                                    true;
+                                ref.read(imgUrlProvider.notifier).state =
+                                    userScoresNotifer[
+                                            pageController.page!.round() - 1]
+                                        .imgUrl;
+                              }
+                            },
+                          ),
                         const SizedBox(width: 20),
-                        const Icon(Icons.refresh, size: 50, color: Color(0xFF5F6368)),
+                        const Icon(Icons.refresh,
+                            size: 50, color: Color(0xFF5F6368)),
                       ],
               ),
             ),
