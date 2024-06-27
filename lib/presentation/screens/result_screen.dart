@@ -1,20 +1,27 @@
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mobile/application/state/user_score.dart';
-import 'package:mobile/domain/entities/scores.dart';
+import 'package:mobile/presentation/notifier/auth_user_notifier.dart';
+import 'package:mobile/presentation/notifier/user_info_notifier.dart';
 import 'package:mobile/presentation/notifier/user_scores_notifer.dart';
 import 'package:mobile/widget/ButtonWidget.dart';
 import 'package:mobile/widget/Result_q3q4.dart';
-import 'package:mobile/widget/StartWidget.dart';
+import 'package:mobile/widget/Result_total.dart';
 import 'package:mobile/widget/result_q1q2.dart';
 
 final imageStateProvider = StateProvider<bool>((ref) => false);
 final imageUrlProvider = StateProvider<String>((ref) => "");
 final imgUrlProvider = StateProvider<String>((ref) => "");
 
-class ResultScreen extends ConsumerWidget {
-  const ResultScreen({Key? key}) : super(key: key);
+class ResultScreen extends ConsumerStatefulWidget {
+  const ResultScreen({super.key});
+
+  @override
+  ResultScreenState createState() => ResultScreenState();
+}
+
+class ResultScreenState extends ConsumerState<ResultScreen> {
+  // const ResultScreen({Key? key}) : super(key: key);
 
   Future<String> _fetchImageUrl(String imagePath) async {
     Reference ref = FirebaseStorage.instance.ref().child(imagePath);
@@ -22,14 +29,20 @@ class ResultScreen extends ConsumerWidget {
     return imageUrl;
   }
 
+  int _currentPage = 0;
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final scoresNotifier = ref.watch(userScoresNotiferProvider);
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final userScoresNotifer = ref.watch(userScoresNotiferProvider);
     final pageController = PageController();
     final imageState = ref.watch(imageStateProvider);
     final imageUrl = ref.watch(imageUrlProvider);
     final imgUrl = ref.watch(imgUrlProvider);
-
+    print(userScoresNotifer);
     return Scaffold(
       appBar: AppBar(
         title: const Text('リザルト'),
@@ -37,7 +50,6 @@ class ResultScreen extends ConsumerWidget {
         backgroundColor: const Color(0xFFFCF1D4),
       ),
       body: SingleChildScrollView(
-        // Wrap your Column with SingleChildScrollView
         child: Column(
           children: [
             SizedBox(
@@ -46,22 +58,39 @@ class ResultScreen extends ConsumerWidget {
                 children: [
                   PageView.builder(
                     controller: pageController,
-                    itemCount: scoresNotifier.length,
+                    onPageChanged: (int page) {
+                      setState(() {
+                        _currentPage = page;
+                      });
+                    },
+                    itemCount: userScoresNotifer.length + 1,
                     itemBuilder: (_, index) {
-                      final score = scoresNotifier[index];
-                      return index == 0 || index == 1
-                          ? SizedBox(
-                              width: 330,
-                              child: ResultQ1Q2CardWidget(
-                                userScoreState: score,
-                              ),
-                            )
-                          : SizedBox(
-                              width: 330,
-                              child: ResultQ3Q4CardWidget(
-                                userScoreState: score,
-                              ),
-                            );
+                      if (index == 0) {
+                        return SizedBox(
+                          width: 330,
+                          child: ResultTotalCardWidget(
+                              userScoreStates: userScoresNotifer),
+                        );
+                      } else if (index - 1 < userScoresNotifer.length) {
+                        final score = userScoresNotifer[index - 1];
+                        if (index - 1 == 0 || index - 1 == 1) {
+                          return SizedBox(
+                            width: 330,
+                            child: ResultQ1Q2CardWidget(
+                              userScoreState: score,
+                            ),
+                          );
+                        } else {
+                          return SizedBox(
+                            width: 330,
+                            child: ResultQ3Q4CardWidget(
+                              userScoreState: score,
+                            ),
+                          );
+                        }
+                      } else {
+                        return Container();
+                      }
                     },
                   ),
                   if (imageState)
@@ -81,7 +110,7 @@ class ResultScreen extends ConsumerWidget {
                                 top: 0,
                                 right: 16,
                                 child: IconButton(
-                                  icon: Icon(Icons.close,
+                                  icon: const Icon(Icons.close,
                                       color: Colors.black, size: 30),
                                   onPressed: () {
                                     ref
@@ -107,10 +136,13 @@ class ResultScreen extends ConsumerWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: List<Widget>.generate(
-                        scoresNotifier.length,
-                        (index) => buildIndicator(index ==
-                            (pageController.page ?? pageController.initialPage)
-                                .round()),
+                        userScoresNotifer.length + 1,
+                        (index) => buildIndicator(
+                          index ==
+                              (pageController.page ??
+                                      pageController.initialPage)
+                                  .round(),
+                        ),
                       ),
                     ),
                   );
@@ -118,38 +150,56 @@ class ResultScreen extends ConsumerWidget {
               ),
             if (imageState) const SizedBox(height: 35),
             const SizedBox(height: 30),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: imageState
-                  ? [
-                      ButtonWidget(
-                        buttonText: "広場に投稿する",
-                        buttonColor: Color(0xFFFD9595),
-                        onPress: () async {
-                          _showConfirmationDialog(context, ref);
-                        },
-                      ),
-                      SizedBox(width: 20),
-                      Icon(Icons.refresh, size: 50, color: Color(0xFF5F6368)),
-                    ]
-                  : [
-                      ButtonWidget(
-                        buttonText: "撮影した画像を見る",
-                        buttonColor: Color(0xFF54BD6B),
-                        onPress: () async {
-                          final imageUrl = await _fetchImageUrl(
-                              scoresNotifier[pageController.page!.round()]
-                                  .imgUrl);
-                          ref.read(imageUrlProvider.notifier).state = imageUrl;
-                          ref.read(imageStateProvider.notifier).state = true;
-                          ref.read(imgUrlProvider.notifier).state =
-                              scoresNotifier[pageController.page!.round()]
-                                  .imgUrl;
-                        },
-                      ),
-                      SizedBox(width: 20),
-                      Icon(Icons.refresh, size: 50, color: Color(0xFF5F6368)),
-                    ],
+            SizedBox(
+              width: 330,
+              child: Row(
+                mainAxisAlignment: _currentPage != 0
+                    ? MainAxisAlignment.spaceBetween
+                    : MainAxisAlignment.end,
+                children: imageState
+                    ? [
+                        ButtonWidget(
+                          buttonText: "広場に投稿する",
+                          buttonColor: const Color(0xFFFD9595),
+                          onPress: () async {
+                            _showConfirmationDialog(context, ref);
+                          },
+                        ),
+                        const SizedBox(width: 20),
+                        const Icon(Icons.refresh,
+                            size: 50, color: Color(0xFF5F6368)),
+                      ]
+                    : [
+                        if (_currentPage != 0)
+                          ButtonWidget(
+                            buttonText: "撮影した画像を見る",
+                            buttonColor: const Color(0xFF54BD6B),
+                            onPress: () async {
+                              if (pageController.page != null &&
+                                  pageController.page!.round() <
+                                      userScoresNotifer.length + 1 &&
+                                  pageController.page!.round() > 0) {
+                                final imageUrl = await _fetchImageUrl(
+                                  userScoresNotifer[
+                                          pageController.page!.round() - 1]
+                                      .imgUrl,
+                                );
+                                ref.read(imageUrlProvider.notifier).state =
+                                    imageUrl;
+                                ref.read(imageStateProvider.notifier).state =
+                                    true;
+                                ref.read(imgUrlProvider.notifier).state =
+                                    userScoresNotifer[
+                                            pageController.page!.round() - 1]
+                                        .imgUrl;
+                              }
+                            },
+                          ),
+                        const SizedBox(width: 20),
+                        const Icon(Icons.refresh,
+                            size: 50, color: Color(0xFF5F6368)),
+                      ],
+              ),
             ),
           ],
         ),
@@ -164,7 +214,7 @@ class ResultScreen extends ConsumerWidget {
       margin: const EdgeInsets.symmetric(horizontal: 4),
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: isActive ? Color(0xFFC93429) : Colors.grey,
+        color: isActive ? const Color(0xFFC93429) : Colors.grey,
       ),
     );
   }
@@ -181,7 +231,7 @@ class ResultScreen extends ConsumerWidget {
             builder: (BuildContext context, BoxConstraints constraints) {
               return Container(
                 width: constraints.maxWidth,
-                color: Color(0xFF54BD6B),
+                color: const Color(0xFF54BD6B),
                 padding: const EdgeInsets.all(16),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
@@ -203,7 +253,7 @@ class ResultScreen extends ConsumerWidget {
                           right: -10,
                           top: -10,
                           child: IconButton(
-                            icon: Icon(Icons.highlight_off,
+                            icon: const Icon(Icons.highlight_off,
                                 color: Colors.white, size: 30),
                             onPressed: () {
                               Navigator.of(context).pop();
@@ -216,7 +266,7 @@ class ResultScreen extends ConsumerWidget {
                     Center(
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(0xFFFD9595),
+                          backgroundColor: const Color(0xFFFD9595),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30),
                           ),
@@ -228,10 +278,16 @@ class ResultScreen extends ConsumerWidget {
                               fontSize: 16,
                               fontWeight: FontWeight.bold),
                         ),
-                        onPressed: () {
-                          ref
+                        onPressed: () async {
+                          final uid = ref.watch(authNotifierProvider)?.uid;
+                          await ref
                               .read(userScoresNotiferProvider.notifier)
                               .scorePost(ref.read(imgUrlProvider));
+                          if (uid != null) {
+                            await ref
+                                .read(userInfoNotifierProvider.notifier)
+                                .setUserInfo(uid);
+                          }
                           Navigator.of(context).pop();
                         },
                       ),
