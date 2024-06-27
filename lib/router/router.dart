@@ -134,7 +134,7 @@ GoRouter CustomRouter(WidgetRef ref) {
         ),
         GoRoute(
           path: '/signup',
-          builder: (context, state) => SignUpScreen(),
+          builder: (context, state) => SignUpPage(),
         ),
         GoRoute(
           path: '/forgotPassword',

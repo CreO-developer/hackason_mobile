@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mobile/domain/entities/auth.dart';
 import 'package:mobile/infrastracture/datasource/auth_data_source.dart';
 
 import '../../domain/repository/auth_repository.dart';
@@ -15,12 +16,12 @@ class AuthService {
       : _authRepository = authRepository;
   final AuthRepository _authRepository;
 
-  Future<UserCredential?> registerUser(String email, String password) async {
+  Future<Auth> registerUser(String email, String password) async {
     final result = await _authRepository.registerUser(email, password);
     return result;
   }
 
-  Future<UserCredential?> loginUser(String email, String password) async {
+  Future<Auth> loginUser(String email, String password) async {
     final result = await _authRepository.loginUser(email, password);
     return result;
   }

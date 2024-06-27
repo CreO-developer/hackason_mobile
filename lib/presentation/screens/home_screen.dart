@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile/presentation/notifier/number_of_notifier.dart';
 import 'package:mobile/presentation/notifier/user_scores_notifer.dart';
-import 'package:mobile/widget/ButtonWidget.dart';
+
 import 'package:mobile/widget/TitleWidget.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
@@ -45,10 +45,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           'assets/title_images/big_title.png',
           width: 300,
         ),
-        Image.asset(
-          'assets/title_images/small_title.png',
-          width: 600,
-        ),
+        const SizedBox(height: 70,),
         SizedBox(
           width: 250, // Set the width of the button
           child: ElevatedButton(

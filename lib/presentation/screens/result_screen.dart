@@ -241,7 +241,7 @@ class ResultScreenState extends ConsumerState<ResultScreen> {
                         const Align(
                           alignment: Alignment.center,
                           child: Text(
-                            '本当に登録しますか？',
+                            '本当に投稿しますか？',
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 18,
@@ -272,7 +272,7 @@ class ResultScreenState extends ConsumerState<ResultScreen> {
                           ),
                         ),
                         child: const Text(
-                          '登録する',
+                          '投稿する',
                           style: TextStyle(
                               color: Colors.white,
                               fontSize: 16,
