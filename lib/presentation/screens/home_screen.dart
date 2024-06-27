@@ -2,8 +2,8 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mobile/presentation/notifier/number_of_notifier.dart';
 import 'package:mobile/presentation/notifier/user_scores_notifer.dart';
-
 import 'package:mobile/widget/ButtonWidget.dart';
 import 'package:mobile/widget/TitleWidget.dart';
 
@@ -16,17 +16,18 @@ class HomeScreen extends ConsumerStatefulWidget {
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   bool showButton = true; // Flag to manage button display
-  String? _selectedValue = '1人'; // Initial value
 
   @override
   Widget build(BuildContext context) {
+    final selectedValue = ref.watch(selectedValueProvider);
+
     return Scaffold(
       body: SingleChildScrollView(
         child: Center(
           child: Column(
             children: [
               if (showButton) _buildInitialView(),
-              if (!showButton) _buildGameOptions(),
+              if (!showButton) _buildGameOptions(selectedValue),
             ],
           ),
         ),
@@ -79,24 +80,24 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     );
   }
 
-  Widget _buildGameOptions() {
+  Widget _buildGameOptions(String? selectedValue) {
     return Column(
       children: [
         Container(height: 180),
         const TitleWidget(),
         Container(height: 40),
-        _buildDropdown(),
+        _buildDropdown(selectedValue),
         Container(height: 180),
         _buildStartGameButton(),
       ],
     );
   }
 
-  Widget _buildDropdown() {
+  Widget _buildDropdown(String? selectedValue) {
     return DropdownButtonHideUnderline(
       child: DropdownButton2<String>(
-        value: _selectedValue,
-        items: ['1人', '2人', '4,5人']
+        value: selectedValue,
+        items: ['1人', '2人']
             .map((item) => DropdownMenuItem<String>(
                   value: item,
                   child: Text(
@@ -134,9 +135,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           scrollbarTheme: ScrollbarThemeData(radius: Radius.circular(40)),
         ),
         onChanged: (value) {
-          setState(() {
-            _selectedValue = value as String?;
-          });
+          ref.read(selectedValueProvider.notifier).updateSelectedValue(value);
         },
       ),
     );
