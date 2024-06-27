@@ -15,11 +15,17 @@ class AccountScreen extends ConsumerStatefulWidget {
 }
 
 class AccountScreenState extends ConsumerState<AccountScreen> {
-  bool _isModalVisible = false;
+  bool _isDeleteModalVisible = false;
+  bool _isLogoutModalVisible = false;
 
-  void _toggleModal() {
+  void _toggleDeleteModal() {
     setState(() {
-      _isModalVisible = !_isModalVisible;
+      _isDeleteModalVisible = !_isDeleteModalVisible;
+    });
+  }
+  void _toggleLogoutModal() {
+    setState(() {
+      _isLogoutModalVisible = !_isLogoutModalVisible;
     });
   }
 
@@ -54,9 +60,7 @@ class AccountScreenState extends ConsumerState<AccountScreen> {
         actions: [
           IconButton(
             icon: Icon(Icons.logout),
-            onPressed: () async {
-              await authNotifier.logoutUser();
-            },
+            onPressed: _toggleLogoutModal,
           ),
         ],
       ),
@@ -85,7 +89,7 @@ class AccountScreenState extends ConsumerState<AccountScreen> {
                     ],
                   ),
                   IconButton(
-                      onPressed: _toggleModal, icon: Icon(Icons.more_horiz))
+                      onPressed: _toggleDeleteModal, icon: Icon(Icons.more_horiz))
                 ],
               ),
             ),
@@ -138,13 +142,25 @@ class AccountScreenState extends ConsumerState<AccountScreen> {
             ),
           ],
         ),
-        if (_isModalVisible)
+        if (_isDeleteModalVisible)
           CustomModal(
             message: 'アカウントを削除しますか？',
             buttonText: '削除',
-            onClose: _toggleModal,
+            onClose: _toggleDeleteModal,
             onButtonPressed: () {
-              _toggleModal();
+              _toggleDeleteModal();
+              userInfoNotifier.deleteUserInfo(authState?.uid);
+              authNotifier.deleteUser();
+              // context.push('/account');
+            },
+          ),
+        if (_isLogoutModalVisible)
+          CustomModal(
+            message: 'ログアウトしますか？',
+            buttonText: 'ログアウト',
+            onClose: _toggleLogoutModal,
+            onButtonPressed: () {
+              _toggleLogoutModal();
               userInfoNotifier.deleteUserInfo(authState?.uid);
               authNotifier.deleteUser();
               // context.push('/account');
