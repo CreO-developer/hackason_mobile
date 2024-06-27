@@ -2,21 +2,40 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mobile/constants/firebase_auth_error.dart';
 import 'package:mobile/presentation/notifier/auth_user_notifier.dart';
 import 'package:mobile/presentation/notifier/user_info_notifier.dart';
+import 'package:mobile/widget/ButtonWidget.dart';
 
-class SignUpScreen extends ConsumerWidget {
-  const SignUpScreen({super.key});
+
+class SignUpPage extends ConsumerStatefulWidget {
+  const SignUpPage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<SignUpPage> createState() => _SignUpPageState();
+}
+class _SignUpPageState extends ConsumerState<SignUpPage> {
+  late TextEditingController emailController = TextEditingController();
+  late TextEditingController passwordController = TextEditingController();
+  late TextEditingController nameController = TextEditingController();
+
+  bool _isPasswordVisible = false; // State for password visibility
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    nameController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final authNotifier = ref.read(authNotifierProvider.notifier);
     final userInfoNotifier = ref.read(userInfoNotifierProvider.notifier);
-    final emailController = TextEditingController();
-    final passwordController = TextEditingController();
 
     return Scaffold(
-      resizeToAvoidBottomInset: true, // これを確認または追加
+      resizeToAvoidBottomInset: true,
       body: Center(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(50),
@@ -30,79 +49,78 @@ class SignUpScreen extends ConsumerWidget {
                 style: TextStyle(color: Color(0xFF2D6486), fontSize: 24),
               ),
               const SizedBox(height: 20),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 20),
-                  const Text(
-                    'ニックネーム',
-                    style: TextStyle(
-                        color: Color(0xFF54BD6B),
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18),
-                  ),
-                  TextFormField(
-                    onChanged: (value) {
-                      userInfoNotifier.setName(value);
-                    },
-                  ),
-                ],
+              _buildFormField(
+                context,
+                label: 'ニックネーム',
+                color: Color(0xFF54BD6B),
+                controller: nameController,
+                onChanged: (value) => userInfoNotifier.setName(value),
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 20),
-                  const Text(
-                    'メールアドレス',
-                    style: TextStyle(
-                        color: Color(0xFF54BD6B),
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18),
-                  ),
-                  TextFormField(
-                    controller: emailController,
-                    onChanged: (value) {
-                      userInfoNotifier.setEmail(value);
-                    },
-                  ),
-                ],
+              _buildFormField(
+                context,
+                label: 'メールアドレス',
+                color: Color(0xFF54BD6B),
+                controller: emailController,
+                onChanged: (value) => userInfoNotifier.setEmail(value),
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 20),
-                  const Text(
-                    'パスワード',
-                    style: TextStyle(
-                        color: Color(0xFF54BD6B),
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18),
+              _buildFormField(
+                context,
+                label: 'パスワード',
+                color: Color(0xFF54BD6B),
+                obscureText: !_isPasswordVisible,
+                controller: passwordController,
+                suffixIcon: IconButton(
+                  icon: Icon(
+                    _isPasswordVisible
+                        ? Icons.visibility
+                        : Icons.visibility_off,
+                    color: Color(0xFF54BD6B),
                   ),
-                  TextFormField(
-                    obscureText: true,
-                    controller: passwordController,
-                  ),
-                ],
+                  onPressed: () {
+                    setState(() {
+                      _isPasswordVisible = !_isPasswordVisible;
+                    });
+                  },
+                ),
               ),
               const SizedBox(height: 20),
-              Container(
-                width: double.infinity,
-                child: ElevatedButton(
-                  child: const Text('ユーザ登録'),
-                  onPressed: () async {
+              Center(
+                child: ButtonWidget(
+                  buttonText: 'ユーザ登録',
+                  buttonColor: const Color(0xFF54BD6B),
+                  onPress: () async {
+                    if (nameController.text.isEmpty) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('ニックネームを入力してください。'),
+                        ),
+                      );
+                      return;
+                    }
+
                     final result = await authNotifier.registerUser(
-                        emailController.text, passwordController.text);
+                      emailController.text,
+                      passwordController.text,
+                    );
+
                     if (result == null) {
-                      print('ユーザ登録に失敗しました。');
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
                           content: Text('ユーザ登録に失敗しました。'),
                         ),
                       );
                       return;
+                    } else if (result.status != FirebaseAuthResultStatus.Successful) {
+                      final errorMessage =
+                          FirebaseAuthExceptionHandler.exceptionMessage(result.status);
+
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text(errorMessage)),
+                      );
+                    } else {
+                      await userInfoNotifier.createUserInfo(result.user!.user!.uid);
+                      await userInfoNotifier.setUserInfo(result.user!.user!.uid);
                     }
-                    await userInfoNotifier.createUserInfo(result!.user!.uid);
-                    await userInfoNotifier.setUserInfo(result!.user!.uid);
                   },
                 ),
               ),
@@ -111,18 +129,21 @@ class SignUpScreen extends ConsumerWidget {
                 text: TextSpan(
                   children: [
                     const TextSpan(
-                        text: "既にアカウントをお持ちの方は",
-                        style: TextStyle(
-                            color: Color(0xFFC93429),
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold)),
+                      text: "既にアカウントをお持ちの方は",
+                      style: TextStyle(
+                        color: Color(0xFFC93429),
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                     TextSpan(
                       text: "こちら",
                       style: const TextStyle(
-                          color: Color(0xFFC93429),
-                          decoration: TextDecoration.underline,
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold),
+                        color: Color(0xFFC93429),
+                        decoration: TextDecoration.underline,
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                      ),
                       recognizer: TapGestureRecognizer()
                         ..onTap = () {
                           context.push('/login');
@@ -130,11 +151,44 @@ class SignUpScreen extends ConsumerWidget {
                     ),
                   ],
                 ),
-              )
+              ),
             ],
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildFormField(
+    BuildContext context, {
+    required String label,
+    required Color color,
+    required TextEditingController controller,
+    ValueChanged<String>? onChanged,
+    bool obscureText = false,
+    Widget? suffixIcon,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const SizedBox(height: 20),
+        Text(
+          label,
+          style: TextStyle(
+            color: color,
+            fontWeight: FontWeight.bold,
+            fontSize: 18,
+          ),
+        ),
+        TextFormField(
+          controller: controller,
+          onChanged: onChanged,
+          obscureText: obscureText,
+          decoration: InputDecoration(
+            suffixIcon: suffixIcon,
+          ),
+        ),
+      ],
     );
   }
 }

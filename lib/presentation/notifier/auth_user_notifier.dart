@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mobile/application/service/auth_service.dart';
+import 'package:mobile/domain/entities/auth.dart';
 
 final authNotifierProvider =
     StateNotifierProvider<AuthStateNotifier, User?>((ref) {
@@ -19,12 +20,12 @@ class AuthStateNotifier extends StateNotifier<User?> {
   final _auth = FirebaseAuth.instance;
   final AuthService _authService;
 
-  Future<UserCredential?> registerUser(String email, String password) async {
+  Future<Auth> registerUser(String email, String password) async {
     final result = await _authService.registerUser(email, password);
     return result;
   }
 
-  Future<UserCredential?> lgoinUser(String email, String password) async {
+  Future<Auth> lgoinUser(String email, String password) async {
     return await _authService.loginUser(email, password);
   }
 

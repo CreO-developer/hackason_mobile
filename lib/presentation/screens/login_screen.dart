@@ -2,8 +2,10 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mobile/constants/firebase_auth_error.dart';
 import 'package:mobile/presentation/notifier/auth_user_notifier.dart';
 import 'package:mobile/presentation/notifier/user_info_notifier.dart';
+import 'package:mobile/widget/ButtonWidget.dart';
 
 class LoginPage extends ConsumerStatefulWidget {
   const LoginPage({super.key});
@@ -15,6 +17,7 @@ class LoginPage extends ConsumerStatefulWidget {
 class _LoginPageState extends ConsumerState<LoginPage> {
   late TextEditingController emailController;
   late TextEditingController passwordController;
+  bool _isPasswordVisible = false;
 
   @override
   void initState() {
@@ -40,12 +43,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
         onTap: () => FocusScope.of(context).unfocus(),
         child: Center(
           child: SingleChildScrollView(
-            padding: EdgeInsets.only(
-              left: 50,
-              right: 50,
-              top: 50,
-              bottom: MediaQuery.of(context).viewInsets.bottom + 50,
-            ),
+            padding: EdgeInsets.symmetric(horizontal: 50, vertical: 50),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -56,34 +54,68 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                   style: TextStyle(color: Color(0xFF2D6486), fontSize: 24),
                 ),
                 const SizedBox(height: 20),
-                TextFormField(
+                _buildFormField(
+                  context,
+                  label: 'メールアドレス',
+                  color: Color(0xFF54BD6B),
                   controller: emailController,
-                  decoration: const InputDecoration(labelText: 'メールアドレス'),
                 ),
-                TextFormField(
+                _buildFormField(
+                  context,
+                  label: 'パスワード',
+                  color: Color(0xFF54BD6B),
+                  obscureText: !_isPasswordVisible,
                   controller: passwordController,
-                  obscureText: true,
-                  decoration: const InputDecoration(labelText: 'パスワード'),
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      _isPasswordVisible
+                          ? Icons.visibility
+                          : Icons.visibility_off,
+                      color: Color(0xFF54BD6B),
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        _isPasswordVisible = !_isPasswordVisible;
+                      });
+                    },
+                  ),
                 ),
-                const SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: () async {
-                    final result = await authNotifier.lgoinUser(
-                        emailController.text, passwordController.text);
-                    if (result == null) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('ログインに失敗しました')));
-                    } else {
-                      userInfoNotifier.setUserInfo(result.user!.uid);
-                      context.push('/home');
-                    }
-                  },
-                  child: const Text('ログイン'),
+                const SizedBox(height: 30),
+                Center(
+                  child: ButtonWidget(
+                    buttonText: 'ログイン',
+                    buttonColor: const Color(0xFF54BD6B),
+                    onPress: () async {
+                      final result = await authNotifier.lgoinUser(
+                        emailController.text,
+                        passwordController.text,
+                      );
+
+                      if (result == null) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                              content: Text('ログインに失敗しました')),
+                        );
+                      } else if (result.status !=
+                          FirebaseAuthResultStatus.Successful) {
+                        final errorMessage =
+                            FirebaseAuthExceptionHandler.exceptionMessage(
+                                result.status);
+
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text(errorMessage)),
+                        );
+                      } else {
+                        userInfoNotifier.setUserInfo(result.user!.user!.uid);
+                        context.push('/home');
+                      }
+                    },
+                  ),
                 ),
                 const SizedBox(height: 40),
                 _buildRichText(context, 'アカウントの作成は', '/signup'),
                 const SizedBox(height: 10),
-                _buildRichText(context, 'パスワードを忘れた場合は', '/forgotPassword')
+                _buildRichText(context, 'パスワードを忘れた場合は', '/forgotPassword'),
               ],
             ),
           ),
@@ -92,23 +124,59 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     );
   }
 
+  Widget _buildFormField(
+    BuildContext context, {
+    required String label,
+    required Color color,
+    required TextEditingController controller,
+    ValueChanged<String>? onChanged,
+    bool obscureText = false,
+    Widget? suffixIcon,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const SizedBox(height: 20),
+        Text(
+          label,
+          style: TextStyle(
+            color: color,
+            fontWeight: FontWeight.bold,
+            fontSize: 18,
+          ),
+        ),
+        TextFormField(
+          controller: controller,
+          onChanged: onChanged,
+          obscureText: obscureText,
+          decoration: InputDecoration(
+            suffixIcon: suffixIcon,
+          ),
+        ),
+      ],
+    );
+  }
+
   Widget _buildRichText(BuildContext context, String text, String route) {
     return RichText(
       text: TextSpan(
         children: [
           TextSpan(
-              text: text,
-              style: const TextStyle(
-                  color: Color(0xFFC93429),
-                  fontSize: 12,
-                  fontWeight: FontWeight.bold)),
+            text: text,
+            style: const TextStyle(
+              color: Color(0xFFC93429),
+              fontSize: 12,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
           TextSpan(
             text: 'こちら',
             style: const TextStyle(
-                color: Color(0xFFC93429),
-                decoration: TextDecoration.underline,
-                fontSize: 12,
-                fontWeight: FontWeight.bold),
+              color: Color(0xFFC93429),
+              decoration: TextDecoration.underline,
+              fontSize: 12,
+              fontWeight: FontWeight.bold,
+            ),
             recognizer: TapGestureRecognizer()
               ..onTap = () => context.push(route),
           ),
