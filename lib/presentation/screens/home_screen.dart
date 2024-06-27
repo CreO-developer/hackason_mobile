@@ -2,6 +2,7 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mobile/application/service/audio_service.dart';
 import 'package:mobile/presentation/notifier/number_of_notifier.dart';
 import 'package:mobile/presentation/notifier/user_scores_notifer.dart';
 
@@ -16,10 +17,24 @@ class HomeScreen extends ConsumerStatefulWidget {
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   bool showButton = true; // Flag to manage button display
+  final AudioPlayerService _audioPlayerService = AudioPlayerService();
+  @override
+  void initState() {
+    super.initState();
+    _audioPlayerService.playBackgroundMusic(
+        'music/bgm.mp3'); // Ensure the asset path is correct
+  }
+
+  @override
+  void dispose() {
+    _audioPlayerService.stopBackgroundMusic();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     final selectedValue = ref.watch(selectedValueProvider);
+    late final AudioPlayerService _audioPlayerService;
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -45,7 +60,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           'assets/title_images/big_title.png',
           width: 300,
         ),
-        const SizedBox(height: 70,),
+        const SizedBox(
+          height: 70,
+        ),
         SizedBox(
           width: 250, // Set the width of the button
           child: ElevatedButton(
