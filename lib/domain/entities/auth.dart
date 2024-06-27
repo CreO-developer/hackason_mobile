@@ -6,7 +6,6 @@ part 'auth.freezed.dart';
 
 @freezed
 class Auth with _$Auth {
-  @JsonSerializable(explicitToJson: true)
   const factory Auth({
     UserCredential? user,
     required FirebaseAuthResultStatus status,
