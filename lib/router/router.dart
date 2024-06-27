@@ -21,132 +21,134 @@ GoRouter CustomRouter(WidgetRef ref) {
   final auth = ref.watch(authNotifierProvider);
 
   return GoRouter(
-      // debugLogDiagnostics: true はデバッグ用
-      debugLogDiagnostics: true,
-      // initialLocation: '/ranking',
-      initialLocation: '/account',
-      // パスと画面の組み合わせ
+    // debugLogDiagnostics: true はデバッグ用
+    debugLogDiagnostics: true,
+    // initialLocation: '/ranking',
+    initialLocation: '/home',
+    // パスと画面の組み合わせ
 
-      routes: [
-        StatefulShellRoute.indexedStack(
-            builder: (context, state, navigationShell) {
-              // Check if the current route is 'home/question'
-              final location = state.uri.toString();
-              if (location == 'home/question1' ||
-                  location == 'home/question2' ||
-                  location == 'home/question3' ||
-                  location == 'home/question4' ||
-                  location == 'home/result') {
-                // Return only the navigationShell content without the AppNavigationBar
-                return navigationShell;
-              } else {
-                // Return the AppNavigationBar
-                return AppNavigationBar(navigationShell: navigationShell);
-              }
-            },
-            branches: [
-              // ランキングブランチ
-              StatefulShellBranch(
-                routes: [
-                  GoRoute(
-                    path: '/ranking',
-                    pageBuilder: (context, state) => NoTransitionPage(
-                      key: state.pageKey,
-                      child: const RankingScreen(),
-                    ),
+    routes: [
+      StatefulShellRoute.indexedStack(
+          builder: (context, state, navigationShell) {
+            // Check if the current route is 'home/question'
+            final location = state.uri.toString();
+            if (location == 'home/question1' ||
+                location == 'home/question2' ||
+                location == 'home/question3' ||
+                location == 'home/question4' ||
+                location == 'home/result') {
+              // Return only the navigationShell content without the AppNavigationBar
+              return navigationShell;
+            } else {
+              // Return the AppNavigationBar
+              return AppNavigationBar(navigationShell: navigationShell);
+            }
+          },
+          branches: [
+            // ランキングブランチ
+            StatefulShellBranch(
+              routes: [
+                GoRoute(
+                  path: '/ranking',
+                  pageBuilder: (context, state) => NoTransitionPage(
+                    key: state.pageKey,
+                    child: const RankingScreen(),
                   ),
-                ],
-              ),
+                ),
+              ],
+            ),
 
-              // homeブランチ
-              StatefulShellBranch(
-                routes: [
-                  GoRoute(
-                    path: '/',
-                    pageBuilder: (context, state) => NoTransitionPage(
-                      key: state.pageKey,
-                      child: HomeScreen(),
-                    ),
+            // homeブランチ
+            StatefulShellBranch(
+              routes: [
+                GoRoute(
+                  path: '/',
+                  pageBuilder: (context, state) => NoTransitionPage(
+                    key: state.pageKey,
+                    child: HomeScreen(),
                   ),
-                  GoRoute(
-                    path: '/home',
-                    pageBuilder: (context, state) => NoTransitionPage(
-                      key: state.pageKey,
-                      child: HomeScreen(),
-                    ),
-                    routes: [
-                      GoRoute(
-                        path: 'question1',
-                        builder: (context, state) => QuestionScreen1(),
-                      ),
-                      GoRoute(
-                        path: 'question2',
-                        builder: (context, state) => QuestionScreen2(),
-                      ),
-                      GoRoute(
-                        path: 'question3',
-                        builder: (context, state) => QuestionScreen3(),
-                      ),
-                      GoRoute(
-                        path: 'question4',
-                        builder: (context, state) => QuestionScreen4(),
-                      ),
-                      GoRoute(
-                        path: 'result',
-                        pageBuilder: (context, state) => MaterialPage(
-                          key: state.pageKey,
-                          child: ResultScreen(),
-                        ),
-                      )
-                    ],
+                ),
+                GoRoute(
+                  path: '/home',
+                  pageBuilder: (context, state) => NoTransitionPage(
+                    key: state.pageKey,
+                    child: HomeScreen(),
                   ),
-                ],
-              ),
-              // likeブランチ
-              StatefulShellBranch(
-                routes: [
-                  GoRoute(
-                    path: '/account',
-                    pageBuilder: (context, state) => NoTransitionPage(
+                  routes: [
+                    GoRoute(
+                      path: 'question1',
+                      builder: (context, state) => QuestionScreen1(),
+                    ),
+                    GoRoute(
+                      path: 'question2',
+                      builder: (context, state) => QuestionScreen2(),
+                    ),
+                    GoRoute(
+                      path: 'question3',
+                      builder: (context, state) => QuestionScreen3(),
+                    ),
+                    GoRoute(
+                      path: 'question4',
+                      builder: (context, state) => QuestionScreen4(),
+                    ),
+                    GoRoute(
+                      path: 'result',
+                      pageBuilder: (context, state) => MaterialPage(
                         key: state.pageKey,
-                        // child: const AccountScreen(),
-                        child: AccountScreen()),
-                  ),
-                ],
-              ),
-
-              StatefulShellBranch(
-                routes: [
-                  GoRoute(
-                    path: '/ranking/post',
-                    pageBuilder: (context, state) => NoTransitionPage(
+                        child: ResultScreen(),
+                      ),
+                    )
+                  ],
+                ),
+              ],
+            ),
+            // likeブランチ
+            StatefulShellBranch(
+              routes: [
+                GoRoute(
+                  path: '/account',
+                  pageBuilder: (context, state) => NoTransitionPage(
                       key: state.pageKey,
-                      child: PostScreen(),
-                    ),
+                      // child: const AccountScreen(),
+                      child: AccountScreen()),
+                ),
+              ],
+            ),
+
+            StatefulShellBranch(
+              routes: [
+                GoRoute(
+                  path: '/ranking/post',
+                  pageBuilder: (context, state) => NoTransitionPage(
+                    key: state.pageKey,
+                    child: PostScreen(),
                   ),
-                ],
-              ),
-              // profileブランチ
-            ]),
-        GoRoute(
-          path: '/login',
-          builder: (context, state) => LoginPage(),
-        ),
-        GoRoute(
-          path: '/signup',
-          builder: (context, state) => SignUpPage(),
-        ),
-        GoRoute(
-          path: '/forgotPassword',
-          builder: (context, state) => ForgotPasswordScreen(),
-        ),
-      ],
-      redirect: (context, state) async {
-        if (auth == null &&
-            state.fullPath != '/signup' &&
-            state.fullPath != '/forgotPassword') {
-          return '/login';
-        }
-        return null;
-      });
+                ),
+              ],
+            ),
+            // profileブランチ
+          ]),
+      GoRoute(
+        path: '/login',
+        builder: (context, state) => LoginPage(),
+      ),
+      GoRoute(
+        path: '/signup',
+        builder: (context, state) => SignUpPage(),
+      ),
+      GoRoute(
+        path: '/forgotPassword',
+        builder: (context, state) => ForgotPasswordScreen(),
+      ),
+    ],
+    redirect: (context, state) async {
+      if (auth == null &&
+          state.fullPath != '/signup' &&
+          state.fullPath != '/forgotPassword') {
+        return '/login';
+      }
+      return null;
+    },
+    // リスナーを追加
+  );
 }
