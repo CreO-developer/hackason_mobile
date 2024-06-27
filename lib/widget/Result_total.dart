@@ -31,12 +31,19 @@ class ResultTotalCardWidget extends StatelessWidget {
       }
     }
 
+    // Convert each score to a percentage out of 100
+    double includeScorePercentage = (includeScore / (160)) * 100;
+    double excludeScorePercentage = (excludeScore / (160)) * 100;
+    double originalScorePercentage = (originalScore / (70)) * 100;
+    double peopleScorePercentage = (peopleScore / (70)) * 100;
+    double faceScorePercentage = faceScore != 0 ? (faceScore / (40)) * 100 : 0;
+
     return Scores(
-      includeScore: includeScore,
-      excludeScore: excludeScore,
-      peopleScore: peopleScore,
-      originalScore: originalScore,
-      faceScore: faceScore != 0 ? faceScore : null, // faceScoreが0のままならnullを返す
+      includeScore: includeScorePercentage.round(),
+      excludeScore: excludeScorePercentage.round(),
+      peopleScore: peopleScorePercentage.round(),
+      originalScore: originalScorePercentage.round(),
+      faceScore: faceScorePercentage.round(),
     );
   }
 

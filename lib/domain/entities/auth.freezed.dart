@@ -98,7 +98,6 @@ class __$$AuthImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-@JsonSerializable(explicitToJson: true)
 class _$AuthImpl implements _Auth {
   const _$AuthImpl({this.user, required this.status});
 

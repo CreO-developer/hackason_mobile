@@ -110,7 +110,6 @@ class QuestionConstants {
   static Map<String, String> getRandomQuestion4(int rangeStart, int rangeEnd) {
     final random = Random();
     final question1List = questions['question4']!;
-    print("呼ばれた");
     // 範囲を確認し、有効な範囲を決定する
     int startIndex = max(0, rangeStart - 1); // 1から始まるインデックスを0から始まるインデックスに変換
     int endIndex = min(question1List.length, rangeEnd); // インデックスの上限を確認

@@ -1,6 +1,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/domain/entities/scores.dart';
+import 'package:mobile/widget/RadarChartDataFixMinMaxWidget.dart';
 
 class RadarChartWidget extends StatelessWidget {
   final Scores scores;
@@ -18,14 +19,16 @@ class RadarChartWidget extends StatelessWidget {
       '表情'
     ];
     return  RadarChart(
-        RadarChartData(
+        RadarChartDataFixMinMax(
+          min: RadarEntry(value: 0),
+          max: RadarEntry(value: 100),
           dataSets: [
             RadarDataSet(
               dataEntries: [
+                RadarEntry(value: scores.originalScore.toDouble()),
+                RadarEntry(value: scores.peopleScore.toDouble()),
                 RadarEntry(value: scores.includeScore.toDouble()),
                 RadarEntry(value: scores.excludeScore.toDouble()),
-                RadarEntry(value: scores.peopleScore.toDouble()),
-                RadarEntry(value: scores.originalScore.toDouble()),
                 RadarEntry(value: scores.faceScore?.toDouble() ?? 0),
               ],
               fillColor: Color(0x002D6486),
